@@ -1,12 +1,12 @@
-(function () {
+// (function () {
 
-    var App = {
-        init : function(){
+//     var App = {
+//         init : function(){
 
-        },
-        render:function(){
+//         },
+//         render:function(){
 
-        }
-    }
+//         }
+//     }
 	
-})();
+// })();

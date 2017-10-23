@@ -18,3 +18,12 @@ body {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+textarea {
+  resize: none;
+}
+
+.subform > .container-fluid{
+  border:1px #ccc solid;
+
+}

@@ -8,22 +8,24 @@ $(document).ready(function(){
 
 
        var wizz = new WizardManager(form_content);        
-    wizz.init();
+        wizz.init();
 
     
     function WizardManager(fc){
         const frmLen = fc.length;
-        let currentWiz = 0;
-        let $wzrd = []
+        this.app = $('#app');
+        this.currentWiz = 0;
+        this.$wzrd = []
         let btn = "";
         let self = this;
     
         this.init = function init(){
-            render()
-            $wzrd[currentWiz].addClass('active')
+            this.render()
+            this.bind();
+            self.$wzrd[self.currentWiz].addClass('active')
         }
 
-        function render() {
+        this.render = function render() {
             $.each(fc, (index, frm)=>{
                 console.log(frm)
                 let btn = {
@@ -56,33 +58,38 @@ $(document).ready(function(){
                 var $renderd = wz.render(btn);
 
                 $wizards.push(wz);
-                $wzrd.push($renderd);
+                self.$wzrd.push($renderd);
                 
-                bind($renderd)
-                $('#app').append($renderd)
+                // bind($renderd)
+                this.app.append($renderd)
             })
         }
 
-        function bind(wz){
-            wz.on('click','.actions .btn[data-action="NEXT"]', function(){
+        this.bind = function bind(){
+            self.app.on('click','.actions .btn[data-action="NEXT"]', function(){
                 next()
             })
 
-            wz.on('click','.actions .btn[data-action="BACK"]', function(){
+            self.app.on('click','.actions .btn[data-action="BACK"]', function(){
                   back()
               })
+
+
+            //DatePicker
+            //Location
+            
         }
 
         
 
         function next(){
-            $wzrd[currentWiz].removeClass('active');
-            $wzrd[++currentWiz].addClass('active');
+            self.$wzrd[self.currentWiz].removeClass('active');
+            self.$wzrd[++self.currentWiz].addClass('active');
         }
 
         function back(){
-            $wzrd[currentWiz].removeClass('active');
-            $wzrd[--currentWiz].addClass('active');
+            self.$wzrd[self.currentWiz].removeClass('active');
+            self.$wzrd[--self.currentWiz].addClass('active');
         }
 
     }
@@ -113,9 +120,13 @@ Wizard.prototype.render = function render (btn) {
         $content.find('.action-bottom').append(actionTemplate(btn))
     })
 
-    $.each(this.fields, function(i, field){
-        $content.find('.form-content').append('<div class="row">'+ field['field-name'] +'</div>')
-    })    
+    // $.each(this.fields, function(i, field){
+       
+        
+    // })    
+    var form = new Form(this.fields);
+
+    $content.find('.form-content').append(form.render())
 
     return $content;
 }
@@ -132,16 +143,4 @@ function actionTemplate(btn){
 }
 
 
-function Component(type, content){
-    this.id;
-    this.label;
-    this.require = false;
-
-}
-
-
-
-Component.prototype.render = function render(){
-    // Here is what you will do for a generic component
-}
 
