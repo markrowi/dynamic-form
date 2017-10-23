@@ -3,19 +3,14 @@ $(document).ready(function(){
     let $forms = [];
     let $wizards = [];
 
-    
-
-
-
-       var wizz = new WizardManager(form_content);        
-        wizz.init();
-
+    var wizz = new WizardManager(form_content);        
+    wizz.init();
     
     function WizardManager(fc){
         const frmLen = fc.length;
         this.app = $('#app');
         this.currentWiz = 0;
-        this.$wzrd = []
+        this.$wzrd = [];
         let btn = "";
         let self = this;
     
@@ -73,10 +68,16 @@ $(document).ready(function(){
             self.app.on('click','.actions .btn[data-action="BACK"]', function(){
                   back()
               })
-
+            
+            self.app.on('click', '.subform-add', function(){
+                var $this = $(this);
+                var formId = $this.data('form-id');
+                var $subformContent = self.app.find('.subform[data-form-id="' + formId  + '"]>.subform-content');
+                $subformContent.append(window.app.subforms[formId].render());
+            })
 
             //DatePicker
-            //Location
+            //Location //autocomplete
             
         }
 
@@ -100,12 +101,12 @@ $(document).ready(function(){
 
 
 
-function Wizard(wz){
-    this.name = wz.name; 
-    this.fields = wz.fields;
-}
+    function Wizard(wz){
+        this.name = wz.name; 
+        this.fields = wz.fields;
+    }
 
-Wizard.prototype.render = function render (btn) {
+    Wizard.prototype.render = function render (btn) {
     $content = $(`<div class="container-fluid wizard" data-wizard=${this.name}>
                 <div class="row actions action-top"></div>
                 <div class="row form-content"><h1>${this.name}</h1></div>
@@ -120,10 +121,6 @@ Wizard.prototype.render = function render (btn) {
         $content.find('.action-bottom').append(actionTemplate(btn))
     })
 
-    // $.each(this.fields, function(i, field){
-       
-        
-    // })    
     var form = new Form(this.fields);
 
     $content.find('.form-content').append(form.render())

@@ -24,7 +24,9 @@
     function DateComponent(comp){
         return `
         <label for="">${comp['field-label']}</label>
-        <input type="textbox" id="" class="form-control" placeholder="Date">`;
+        <div class="input-group date">
+            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        </div>`;
     }
     
     function TextAreaComponent(comp){
@@ -56,7 +58,7 @@
     function RadioComponent(comp){
         return `
         <label  for="">${comp['field-label']}</label>
-        <div class="col-md-12" placeholder="">
+        <div class="form-group" placeholder="">
         ${
             $.map(comp['field-options'],function(opt, index){
             return  `<div class="radio"><label><input type="radio" name="${comp['field-name']}" value="${opt.value}">${opt.label}</label></div>`;
@@ -68,7 +70,7 @@
     function CheckboxComponent(comp){
         return `
         <label  for="">${comp['field-label']}</label>
-        <div class="col-md-12" placeholder="">
+        <div class="form-group" placeholder="">
         ${
             $.map(comp['field-options'],function(opt, index){
             return  `<div class="checkbox"><label><input type="checkbox" name="${comp['field-name']}" value="${opt.value}">${opt.label}</label></div>`;
@@ -80,16 +82,16 @@
     function SubformComponent(comp){
         
         var frm = new Form(comp.fields);
+        window.app = window.app || {};
+        window.app.subforms = window.app.subforms || [];
+        window.app.subforms[comp['form_id']] = frm;
         return `
         <div class="subform" data-type="subform" data-form-id="${comp['form_id']}">
             <label for="">${comp['field-label']}</label>
-            <div class="container-fluid subform-content">${frm.render()}</div>
-            <div class="form-group pull-right"> <input type="button" data-form-id=${comp['form_id']} class="btn btn-primary" value="+ Add"/></div>
+            <div class="container-fluid subform-content">${frm.render().html()}</div>
+            <div class="form-group pull-right"> <input type="button" data-form-id=${comp['form_id']} class="btn btn-primary subform-add" value="+ Add"/></div>
         </div>` ;
-
-        // array subform
-
-
+     
     }
 
 
