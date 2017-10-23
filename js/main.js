@@ -1,36 +1,90 @@
 $(document).ready(function(){
     const form_content = webData.form_content
     let $forms = [];
+    let $wizards = [];
+
+    
 
 
-    FormManager(form_content)
 
-    function FormManager(fc){
+       var wizz = new WizardManager(form_content);        
+    wizz.init();
+
+    
+    function WizardManager(fc){
         const frmLen = fc.length;
+        let currentWiz = 0;
+        let $wzrd = []
         let btn = "";
+        let self = this;
+    
+        this.init = function init(){
+            render()
+            $wzrd[currentWiz].addClass('active')
+        }
+
+        function render() {
+            $.each(fc, (index, frm)=>{
+                console.log(frm)
+                let btn = {
+                    top: [],
+                    bottom: []
+                }
+                //Btn
+                if(index !== 0){
+                    btn.top.push({
+                        label:'Back',
+                        action:'BACK'
+                    }) 
+                }
+                if(frmLen === (++index) ){
+                    // btn = "Submit"   
+                    btn.bottom.push({
+                        label:'Submit',
+                        action:'SUBMIT'
+                    }) 
+                }else{
+                    // btn = "Next"
+                    btn.bottom.push({
+                        label:'Next',
+                        action:'NEXT'
+                    })       
+                }
+
+            
+                var wz = new Wizard(frm);
+                var $renderd = wz.render(btn);
+
+                $wizards.push(wz);
+                $wzrd.push($renderd);
+                
+                bind($renderd)
+                $('#app').append($renderd)
+            })
+        }
+
+        function bind(wz){
+            wz.on('click','.actions .btn[data-action="NEXT"]', function(){
+                next()
+            })
+
+            wz.on('click','.actions .btn[data-action="BACK"]', function(){
+                  back()
+              })
+        }
+
         
-        
-    
-        $.each(fc, (index, frm)=>{
-    
-            //Btn
 
+        function next(){
+            $wzrd[currentWiz].removeClass('active');
+            $wzrd[++currentWiz].addClass('active');
+        }
 
-            if(frmLen === (++index) ){
+        function back(){
+            $wzrd[currentWiz].removeClass('active');
+            $wzrd[--currentWiz].addClass('active');
+        }
 
-                btn = "Submit"    
-            }else{
-                btn = "Next"
-                // data-next = index++          
-            }
-    
-    
-            var $frm = FormBuilder(frm);
-
-            $forms.push($frm);
-    
-        })
-    
     }
 
 
@@ -39,42 +93,50 @@ $(document).ready(function(){
 
 
 
-// function Wizard(){
-//     this.$content;
-// }
+function Wizard(wz){
+    this.name = wz.name; 
+    this.fields = wz.fields;
+}
+
+Wizard.prototype.render = function render (btn) {
+    $content = $(`<div class="container-fluid wizard" data-wizard=${this.name}>
+                <div class="row actions action-top"></div>
+                <div class="row form-content"><h1>${this.name}</h1></div>
+                <div class="row actions action-bottom"></div>
+            </div>`)
+ 
+
+    $.each(btn.top, function(i, btn){
+        $content.find('.action-top').append(actionTemplate(btn))
+    })
+    $.each(btn.bottom, function(i, btn){
+        $content.find('.action-bottom').append(actionTemplate(btn))
+    })
+
+    $.each(this.fields, function(i, field){
+        $content.find('.form-content').append('<div class="row">'+ field['field-name'] +'</div>')
+    })    
+
+    return $content;
+}
 
 // Form.prototype.nextWizard = function nextWizard(){
 //     // this.$content.data('index')
 // }
 
 
-function ActionManager(frm){
-    
-}
-
-function FormBuilder(frm, btn){
-    console.log(frm)
-    let form = $(`<form>
-    <div class="col-lg-12 action-top"></div>
-
-    <div class="col-lg-12 action-bottom"></div>
-    </form`);
-
-    $.each(frm.fields, (index, field)=>{
-        console.log(field)
-    })
-
-
-    return form;
-    console.log(btn)
-
+function actionTemplate(btn){
+    return `<div class="col-md-12">
+            <input type="button" name="" data-action="${btn.action}" class="btn btn-primary form-control" id="" value="${btn.label}">
+        </div>`
 }
 
 
-function Component(){
+function Component(type, content){
     this.id;
     this.label;
     this.require = false;
+
 }
 
 
@@ -83,39 +145,3 @@ Component.prototype.render = function render(){
     // Here is what you will do for a generic component
 }
 
-
-function compInput(conf){
-
-    let inp =  `<div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-    </div>
-    `
-    
-    switch(conf.type){
-        case "text" : {
-            inp = `<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email">`;
-        }
-        case "number" : {
-            inp = `<input type="number" class="form-control" id="exampleInputEmail1" placeholder="Email">`;
-        }
-        case "email" : {
-            inp = `<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">`;
-        }
-        case "password": {
-            inp = `<input type="password" class="form-control" id="exampleInputEmail1" placeholder="Email">`;
-        }
-    }
-
-    var $wrapper = componentWrapper();
-
-    $wrapper.append(inp);
-
-
-}
-
-function componentWrapper(fr,lbl){
-    return  $(`<div class="form-group">
-                <label for="${fr}">${lbl}</label>
-            </div>`)
-}
