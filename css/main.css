@@ -25,5 +25,5 @@ textarea {
 
 .subform > .container-fluid{
   border:1px #ccc solid;
-
+  margin-bottom: 10px;
 }

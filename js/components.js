@@ -81,7 +81,13 @@
         
         var frm = new Form(comp.fields);
         return `
-        <div class="subform"><label for="">${comp['field-label']}</label> <div class="container-fluid">${frm.render()}</div></div>` ;
+        <div class="subform" data-type="subform" data-form-id="${comp['form_id']}">
+            <label for="">${comp['field-label']}</label>
+            <div class="container-fluid subform-content">${frm.render()}</div>
+            <div class="form-group pull-right"> <input type="button" data-form-id=${comp['form_id']} class="btn btn-primary" value="+ Add"/></div>
+        </div>` ;
+
+        // array subform
 
 
     }
