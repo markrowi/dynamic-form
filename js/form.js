@@ -5,18 +5,40 @@ function Form(fields, parent_id){
 
 Form.prototype.bindEvent = function bindEvent($frm){
     $frm.find('.input-group.date').datepicker({});
-    
+
+    var radio_count = $(window.app).find('.field-radio-group').length;
+    $frm.find('.field-radio-group').each(function(index, rg){
+        var $rg = $(rg);
+        $rg.find(':input').attr('name', $rg.data('field-name') + '_' + radio_count + '[]');
+    })
+
+    var checkbox_count = $(window.app).find('.field-checkbox-group').length;
+    $frm.find('.field-checkbox-group').each(function(index, cg){
+        var $cg = $(cg);
+        $cg.find(':input').attr('name', $cg.data('field-name') + '_' + checkbox_count + '[]');
+    })
+
+    $frm.find('.field-location-province').on('change', function(){
+        var $this = $(this);
+        var $city = $this.parent().parent().find('.field-location-city');
+
+        if($this.val()!==''){
+            console.log('asda', $city)
+            $city.prop('disabled', false)
+        }else{
+            $city.prop('disabled',true);
+            $city.val('')
+        }
+    })
+    // $(':input').attr('data-parsley-group',1)
 }
 
 Form.prototype.render = function(){
     var components = app.Components;
     let $form = $('<div class="form"></div>')
-
+    let col = 1;
     $.each(this.fields, function(i, field){
         if(components[field.field_type]!==undefined){
-            // form+=components[field.field_type](field).wrapFormGroup();
-            console.log(field['field-col'], field.field_type)
-            //Subform always 0;
 
             $form.append(components[field.field_type](field)
                     .wrapFormGroup()
@@ -25,6 +47,7 @@ Form.prototype.render = function(){
     })
     
     this.bindEvent($form)
+    $form.append('<div class="clearfix"></div>')
     return $form
 
 }

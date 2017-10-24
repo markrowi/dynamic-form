@@ -16,6 +16,7 @@
   <!-- Bootstrap core CSS -->
   <link href="css/normalize.min.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/parsley.css" rel="stylesheet" />
   <link href="css/bootstrap-datepicker.min.css" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
   
@@ -30,7 +31,7 @@
     <div class="row">
       <div class="col-lg-6 hidden-xs hidden-sm">Logo</div>
       <div class="col-lg-6 col-xs-12">
-          <div class="app" id="app">
+          <div class="app" data-parsley-validate="parsley" id="app">
           </div>
        
       </div>
@@ -39,6 +40,7 @@
   </div>
  
   <script src="js/jquery.min.js"></script>
+  <script src="js/parsley.min.js"></script>
   <script src="js/bootstrap-datepicker.min.js"></script>
   <script src="js/data.js"></script>
   <script src="js/components.js"></script>
