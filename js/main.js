@@ -62,6 +62,7 @@ $(document).ready(function(){
 
         this.bind = function bind(){
             self.app.on('click','.actions .btn[data-action="NEXT"]', function(){
+                // Validation;
                 next()
             })
 

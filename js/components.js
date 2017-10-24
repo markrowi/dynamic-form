@@ -44,39 +44,38 @@
     }
 
     function DropdownComponent(comp){
-        return `
-        <label  for="">${comp['field-label']}</label>
-        <select id="" class="form-control" placeholder="">
-        ${
-            comp['field-options'].map(function(opt, index){
-            return  `<option value="${opt.value}">${opt.label}</option>`;
-            })
-        }
-        </select>`;
+        return `<label  for="">${comp['field-label']}</label>
+                <select id="" class="form-control" placeholder="">
+                ${
+                    comp['field-options'].map(function(opt, index){
+                    return  `<option value="${opt.value}">${opt.label}</option>`;
+                    })
+                }
+                </select>`;
     }
 
     function RadioComponent(comp){
-        return `
-        <label  for="">${comp['field-label']}</label>
-        <div class="form-group" placeholder="">
-        ${
-            $.map(comp['field-options'],function(opt, index){
-            return  `<div class="radio"><label><input type="radio" name="${comp['field-name']}" value="${opt.value}">${opt.label}</label></div>`;
-            }).join(' ')
-        }
-        </div>`;
+
+
+        return `<label  for="">${comp['field-label']}</label>
+                <div class="form-group" placeholder="">
+                ${
+                    $.map(comp['field-options'],function(opt, index){
+                    return  `<div class="radio"><label><input type="radio" name="${comp['field-name']}" value="${opt.value}">${opt.label}</label></div>`;
+                    }).join(' ')
+                }
+                </div>`;
     }
 
     function CheckboxComponent(comp){
-        return `
-        <label  for="">${comp['field-label']}</label>
-        <div class="form-group" placeholder="">
-        ${
-            $.map(comp['field-options'],function(opt, index){
-            return  `<div class="checkbox"><label><input type="checkbox" name="${comp['field-name']}" value="${opt.value}">${opt.label}</label></div>`;
-            }).join(' ')
-        }
-        </div>`;
+        return `<label  for="">${comp['field-label']}</label>
+                <div class="form-group" placeholder="">
+                ${
+                    $.map(comp['field-options'],function(opt, index){
+                    return  `<div class="checkbox"><label><input type="checkbox" name="${comp['field-name']}" value="${opt.value}">${opt.label}</label></div>`;
+                    }).join(' ')
+                }
+                </div>`;
     }
 
     function SubformComponent(comp){
@@ -85,13 +84,13 @@
         window.app = window.app || {};
         window.app.subforms = window.app.subforms || [];
         window.app.subforms[comp['form_id']] = frm;
-        return `
-        <div class="subform" data-type="subform" data-form-id="${comp['form_id']}">
-            <label for="">${comp['field-label']}</label>
-            <div class="container-fluid subform-content">${frm.render().html()}</div>
-            <div class="form-group pull-right"> <input type="button" data-form-id=${comp['form_id']} class="btn btn-primary subform-add" value="+ Add"/></div>
-        </div>` ;
-     
+        return `<div class="subform" data-type="subform" data-form-id="${comp['form_id']}">
+                    <label for="">${comp['field-label']}</label>
+                    <div class="container-fluid subform-content">
+                        ${frm.render()[0].outerHTML}
+                    </div>
+                    <div class="form-group pull-right"> <input type="button" data-form-id=${comp['form_id']} class="btn btn-primary subform-add" value="+ Add"/></div>
+                </div>`;
     }
 
 
