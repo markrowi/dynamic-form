@@ -3,13 +3,13 @@
     function TextBoxComponent(comp){
         return `
         <label for="">${comp['field-label']}</label>
-        <input type="textbox" id="" class="form-control" placeholder="1">`;
+        <input type="textbox" id="" class="form-control" placeholder="${comp['field-placeholder']}">`;
     }
     
     function EmailComponent(comp){
         return `
         <label for="">${comp['field-label']}</label>
-        <input type="email" id="" class="form-control" placeholder="1">`;
+        <input type="email" id="" class="form-control" placeholder="mail@example.com">`;
     }
     
     function LocationComponent(comp){
@@ -25,7 +25,7 @@
         return `
         <label for="">${comp['field-label']}</label>
         <div class="input-group date">
-            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            <input type="text" class="form-control"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
         </div>`;
     }
     
@@ -55,7 +55,6 @@
     }
 
     function RadioComponent(comp){
-
 
         return `<label  for="">${comp['field-label']}</label>
                 <div class="form-group" placeholder="">
@@ -90,6 +89,7 @@
                         ${frm.render()[0].outerHTML}
                     </div>
                     <div class="form-group pull-right"> <input type="button" data-form-id=${comp['form_id']} class="btn btn-primary subform-add" value="+ Add"/></div>
+                    <div class="clearfix"></div>
                 </div>`;
     }
 
