@@ -3,21 +3,21 @@
     function TextBoxComponent(comp){
         return `
         <label for="">${comp['field-label']}</label>
-        <input type="textbox" id="" class="form-control" placeholder="${comp['field-placeholder']}">`;
+        <input type="text" id=""  class="form-control" ${comp['numeric-only']?'data-parsley-type="number"':''} data-field-type='${comp['field_type']}'  ${comp['field-required']?'required=""':''} placeholder="${comp['field-placeholder']}">`;
     }
     
     function EmailComponent(comp){
         return `
         <label for="">${comp['field-label']}</label>
-        <input type="email" id="" class="form-control" placeholder="mail@example.com">`;
+        <input type="email" id="" class="form-control"  data-field-type='${comp['field_type']}'  ${comp['field-required']?'required':''} placeholder="mail@example.com">`;
     }
     
     function LocationComponent(comp){
         return `
         <label for="">Province</label>
-        <input type="textbox" id="" class="form-control" placeholder="location">`.wrapFormGroup() + 
+        <input type="textbox" id="" class="form-control field-location-province" data-field-type='${comp['field_type']}' ${comp['field-required']?'required':''} placeholder="">`.wrapFormGroup() + 
         `<label for="">City</label>
-        <input type="textbox" id="" class="form-control" placeholder="location">
+        <input type="textbox" id="" disabled class="form-control field-location-city" data-field-type='${comp['field_type']}' ${comp['field-required']?'required':''} placeholder="">
         `.wrapFormGroup();
     }
     
@@ -25,14 +25,14 @@
         return `
         <label for="">${comp['field-label']}</label>
         <div class="input-group date">
-            <input type="text" class="form-control"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input type="text" class="form-control"  ${comp['field-required']?'required':''} > <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
         </div>`;
     }
     
     function TextAreaComponent(comp){
         return `
         <label  for="">${comp['field-label']}</label>
-        <textarea type="textbox" id="" class="form-control" placeholder=""></textarea>`;
+        <textarea type="textbox" id="" class="form-control" ${comp['field-required']?'required':''} placeholder=""></textarea>`;
     }
     
     function LabelComponent(comp){
@@ -45,7 +45,8 @@
 
     function DropdownComponent(comp){
         return `<label  for="">${comp['field-label']}</label>
-                <select id="" class="form-control" placeholder="">
+                <select id="" ${comp['field-required']?'required':''} class="form-control" placeholder="">
+                ${comp['field-required']?`<option value="" disabled selected>${comp['field-placeholder']}</option>`:''}
                 ${
                     comp['field-options'].map(function(opt, index){
                     return  `<option value="${opt.value}">${opt.label}</option>`;
@@ -57,10 +58,10 @@
     function RadioComponent(comp){
 
         return `<label  for="">${comp['field-label']}</label>
-                <div class="form-group" placeholder="">
+                <div class="form-group field-radio-group"  data-field-name="${comp['field-name']}" placeholder="">
                 ${
                     $.map(comp['field-options'],function(opt, index){
-                    return  `<div class="radio"><label><input type="radio" name="${comp['field-name']}" value="${opt.value}">${opt.label}</label></div>`;
+                    return  `<div class="radio"><label><input type="radio" ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
                     }).join(' ')
                 }
                 </div>`;
@@ -68,14 +69,15 @@
 
     function CheckboxComponent(comp){
         return `<label  for="">${comp['field-label']}</label>
-                <div class="form-group" placeholder="">
+                <div class="form-group field-checkbox-group" data-field-name="${comp['field-name']}" placeholder="">
                 ${
                     $.map(comp['field-options'],function(opt, index){
-                    return  `<div class="checkbox"><label><input type="checkbox" name="${comp['field-name']}" value="${opt.value}">${opt.label}</label></div>`;
+                    return  `<div class="checkbox"><label><input  type="checkbox" ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
                     }).join(' ')
                 }
                 </div>`;
-    }
+                //data-parsley-mincheck=""
+            }
 
     function SubformComponent(comp){
         

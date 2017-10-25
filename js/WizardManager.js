@@ -6,6 +6,8 @@ function WizardManager(fc){
     let self = this;
     let $forms = [];
     let wizards = [];
+    this.$parseApp = $('.app').parsley();
+
 
     this.init = function init(){
         this.render()
@@ -15,7 +17,7 @@ function WizardManager(fc){
 
     this.render = function render() {
         $.each(fc, (index, frm)=>{
-            console.log(frm)
+            // console.log(frm)
             let btn = {
                 top: [],
                 bottom: []
@@ -57,7 +59,10 @@ function WizardManager(fc){
     this.bind = function bind(){
         self.app.on('click','.actions .btn[data-action="NEXT"]', function(){
             // Validation;
-            next()
+            if(validate()){
+                next();
+            }
+            
         })
 
         self.app.on('click','.actions .btn[data-action="BACK"]', function(){
@@ -78,11 +83,24 @@ function WizardManager(fc){
             $subformContent.append(window.app.subforms[formId].render());
         })
 
+        $.each(self.$wzrd, function(index, $wiz){
+            console.log($wiz)
+            $wiz.attr('data-wiz-step',index);
+            
+        })
 
         //Location //autocomplete
         
     }
 
+
+    function validate() {
+        self.$wzrd[self.currentWiz].find(':input').attr('data-parsley-group','block-'+self.currentWiz);
+
+        
+        return self.$parseApp.validate({group:'block-'+self.currentWiz});
+        
+    }
     
 
     function next(){
