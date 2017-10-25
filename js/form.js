@@ -9,13 +9,17 @@ Form.prototype.bindEvent = function bindEvent($frm){
     var radio_count = $(window.app).find('.field-radio-group').length;
     $frm.find('.field-radio-group').each(function(index, rg){
         var $rg = $(rg);
-        $rg.find(':input').attr('name', $rg.data('field-name') + '_' + radio_count + '[]');
+        var id = $rg.data('field-name') + '_' + radio_count;
+        $rg.attr('id', id);
+        $rg.find(':input').attr('name', id).attr('data-parsley-errors-container','#' + id);
     })
 
     var checkbox_count = $(window.app).find('.field-checkbox-group').length;
     $frm.find('.field-checkbox-group').each(function(index, cg){
         var $cg = $(cg);
-        $cg.find(':input').attr('name', $cg.data('field-name') + '_' + checkbox_count + '[]');
+        var id = $cg.data('field-name') + '_' + checkbox_count;
+        $cg.attr('id', id);
+        $cg.find(':input').attr('name', id + '[]').attr('data-parsley-errors-container','#' + id);;
     })
 
     $frm.find('.field-location-province').on('change', function(){
@@ -48,6 +52,7 @@ Form.prototype.render = function(){
     
     this.bindEvent($form)
     $form.append('<div class="clearfix"></div>')
+    
     return $form
 
 }

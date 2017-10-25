@@ -88,6 +88,7 @@ function WizardManager(fc){
             $wiz.attr('data-wiz-step',index);
             
         })
+
         //Location //autocomplete
         
     }
@@ -95,6 +96,8 @@ function WizardManager(fc){
 
     function validate() {
         self.$wzrd[self.currentWiz].find(':input').attr('data-parsley-group','block-'+self.currentWiz);
+
+        
         return self.$parseApp.validate({group:'block-'+self.currentWiz});
         
     }

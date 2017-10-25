@@ -45,7 +45,7 @@
 
     function DropdownComponent(comp){
         return `<label  for="">${comp['field-label']}</label>
-                <select id="" ${comp['field-required']?'required':''} required class="form-control" placeholder="">
+                <select id="" ${comp['field-required']?'required':''} class="form-control" placeholder="">
                 ${comp['field-required']?`<option value="" disabled selected>${comp['field-placeholder']}</option>`:''}
                 ${
                     comp['field-options'].map(function(opt, index){
@@ -58,10 +58,10 @@
     function RadioComponent(comp){
 
         return `<label  for="">${comp['field-label']}</label>
-                <div class="form-group field-radio-group" data-field-name="${comp['field-name']}" placeholder="">
+                <div class="form-group field-radio-group"  data-field-name="${comp['field-name']}" placeholder="">
                 ${
                     $.map(comp['field-options'],function(opt, index){
-                    return  `<div class="radio"><label><input type="radio" value="${opt.value}">${opt.label}</label></div>`;
+                    return  `<div class="radio"><label><input type="radio" ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
                     }).join(' ')
                 }
                 </div>`;
@@ -72,11 +72,12 @@
                 <div class="form-group field-checkbox-group" data-field-name="${comp['field-name']}" placeholder="">
                 ${
                     $.map(comp['field-options'],function(opt, index){
-                    return  `<div class="checkbox"><label><input type="checkbox" value="${opt.value}">${opt.label}</label></div>`;
+                    return  `<div class="checkbox"><label><input  type="checkbox" ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
                     }).join(' ')
                 }
                 </div>`;
-    }
+                //data-parsley-mincheck=""
+            }
 
     function SubformComponent(comp){
         
