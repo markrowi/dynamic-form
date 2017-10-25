@@ -71,7 +71,7 @@ function WizardManager(fc){
             $subformContent.append(window.app.subforms[formId].render());
         })
 
-        self.app.on('click', '.subform-remove;', function(){
+        self.app.on('click', '.subform-remove', function(){
             var $this = $(this);
             var formId = $this.data('form-id');
             var $subformContent = self.app.find('.subform[data-form-id="' + formId  + '"]>.subform-content');
