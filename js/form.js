@@ -3,8 +3,37 @@ function Form(fields, parent_id){
     this.parent_id = parent_id || null
 }
 
+function populateSelect($select, list, val, desc, placeholder=""){
+    $select.empty();
+    $select.append(`<option value="">${placeholder}</option>`)
+    $.each(list, function(index, item){
+        
+        $select.append(`<option value="${item[val]}">${item[desc]}</option>`)
+    })
+}
+
 Form.prototype.bindEvent = function bindEvent($frm){
     $frm.find('.input-group.date').datepicker({});
+
+    var provinces = window.app.Provinces || [];
+    
+
+    if(provinces.length === 0){
+        $.get('http://events.enlo.digital/api/provinces', function(res){
+            
+            window.app.Provinces = res;
+            $.each($frm.find('.field-location-province'), function(index, prv){
+                populateSelect($(prv), res, 'provDesc','provDesc', "Select Province")
+            })
+            
+        })
+    }else{
+        $.each($frm.find('.field-location-province'), function(index, prv){
+            populateSelect($(prv), window.app.Provinces, 'provDesc','provDesc', "Select Province")
+        })
+    }
+
+
 
     var radio_count = $(window.app).find('.field-radio-group').length;
     $frm.find('.field-radio-group').each(function(index, rg){
@@ -22,18 +51,29 @@ Form.prototype.bindEvent = function bindEvent($frm){
         $cg.find(':input').attr('name', id + '[]').attr('data-parsley-errors-container','#' + id);;
     })
 
+
+
     $frm.find('.field-location-province').on('change', function(){
         var $this = $(this);
         var $city = $this.parent().parent().find('.field-location-city');
 
+        
+
         if($this.val()!==''){
-            console.log('asda', $city)
             $city.prop('disabled', false)
+            $.get('http://events.enlo.digital/api/cities/' + $this.val() , function(res){
+                $.each($city, function(index, prv){
+                    populateSelect($(prv), res, 'citiesmunDesc','citiesmunDesc', "Select City")
+                })
+                
+            })
         }else{
             $city.prop('disabled',true);
             $city.val('')
         }
     })
+
+
     // $(':input').attr('data-parsley-group',1)
 }
 
@@ -45,7 +85,7 @@ Form.prototype.render = function(){
         if(components[field.field_type]!==undefined){
 
             $form.append(components[field.field_type](field)
-                    .wrapFormGroup()
+                    .wrapComponent(field)
                     .wrapCol(field.field_type==='subform'? 0 : field['field-col']));
         }
     })
@@ -57,9 +97,14 @@ Form.prototype.render = function(){
 
 }
 
-String.prototype.wrapFormGroup = function wrapFormGroup(){
-    return '<div class="form-group">' + this + '</div>'
+String.prototype.wrapFormGroup = function wrapFormGroup(name=""){
+        return '<div class="form-group">' + this + '</div>';
 }
+
+String.prototype.wrapComponent = function wrapComponent(field){
+    return `<div class="form-group component" data-field-type="${field.field_type}" data-field-name="${field['field-name']}">${this}</div>`
+}
+
 
 String.prototype.wrapCol = function wrapCol(num){
     return `<div class="${num>0?'col-md-6':'col-md-12'}">${this}</div>`

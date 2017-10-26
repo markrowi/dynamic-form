@@ -3,36 +3,75 @@
     function TextBoxComponent(comp){
         return `
         <label for="">${comp['field-label']}</label>
-        <input type="text" id=""  class="form-control" ${comp['numeric-only']?'data-parsley-type="number"':''} data-field-type='${comp['field_type']}'  ${comp['field-required']?'required=""':''} placeholder="${comp['field-placeholder']}">`;
+        <input 
+            type="text" 
+            class="form-control" 
+            ${comp['numeric-only']?'data-parsley-type="number"':''} 
+            data-field-type='${comp['field_type']}'  ${comp['field-required']?'required=""':''} 
+            placeholder="${comp['field-placeholder']}"
+        >`;
     }
     
     function EmailComponent(comp){
         return `
         <label for="">${comp['field-label']}</label>
-        <input type="email" id="" class="form-control"  data-field-type='${comp['field_type']}'  ${comp['field-required']?'required':''} placeholder="mail@example.com">`;
+        <input 
+            type="email"
+            class="form-control"  
+            data-field-type='${comp['field_type']}'  
+            ${comp['field-required']?'required':''} 
+            placeholder="mail@example.com"
+        >`;
     }
     
     function LocationComponent(comp){
         return `
         <label for="">Province</label>
-        <input type="textbox" id="" class="form-control field-location-province" data-field-type='${comp['field_type']}' ${comp['field-required']?'required':''} placeholder="">`.wrapFormGroup() + 
+        <select
+            ${comp['field-required']?'required':''} 
+            class="form-control field-location-province" 
+            data-field-type='${comp['field_type']}' 
+            placeholder=""
+        >
+            <option value="" disabled selected>Select Province</option>
+        </select>`.wrapFormGroup() + 
         `<label for="">City</label>
-        <input type="textbox" id="" disabled class="form-control field-location-city" data-field-type='${comp['field_type']}' ${comp['field-required']?'required':''} placeholder="">
-        `.wrapFormGroup();
+        <select 
+            ${comp['field-required']?'required':''} 
+            disabled 
+            class="form-control field-location-city" 
+            data-field-type='${comp['field_type']}' 
+            placeholder=""
+        >
+            <option value="" disabled selected>Select City</option>
+        </select>`.wrapFormGroup() 
     }
     
     function DateComponent(comp){
         return `
         <label for="">${comp['field-label']}</label>
         <div class="input-group date">
-            <input type="text" class="form-control"  ${comp['field-required']?'required':''} > <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input 
+                type="text" 
+                class="form-control"  
+                ${comp['field-required']?'required':''} 
+            > 
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
         </div>`;
     }
     
     function TextAreaComponent(comp){
         return `
         <label  for="">${comp['field-label']}</label>
-        <textarea type="textbox" id="" class="form-control" ${comp['field-required']?'required':''} placeholder=""></textarea>`;
+        <textarea 
+            type="textbox"
+            class="form-control" 
+            ${comp['field-required']?'required':''} 
+            placeholder=""
+        >
+        </textarea>`;
     }
     
     function LabelComponent(comp){
