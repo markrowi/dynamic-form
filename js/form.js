@@ -7,11 +7,14 @@ function Form(fields, id = null, parent_id = null){
 
 function populateSelect($select, list, val, desc, placeholder=""){
     $select.empty();
-    $select.append(`<option value="">${placeholder}</option>`)
+    $select.append(`<option disabled selected value="">${placeholder}</option>`)
     $.each(list, function(index, item){
-        
         $select.append(`<option value="${item[val]}">${item[desc]}</option>`)
     })
+    if($select.data('value')!==""){
+        $select.find('option[value="'+$select.data('value')+'"]').attr('selected','')
+        $select.trigger('change')
+    }
 }
 
 Form.prototype.bindEvent = function bindEvent($frm){
@@ -25,9 +28,10 @@ Form.prototype.bindEvent = function bindEvent($frm){
             
             window.app.Provinces = res;
             $.each($frm.find('.field-location-province'), function(index, prv){
+                
                 populateSelect($(prv), res, 'provDesc','provDesc', "Select Province")
             })
-            
+           
         })
     }else{
         $.each($frm.find('.field-location-province'), function(index, prv){
@@ -37,21 +41,21 @@ Form.prototype.bindEvent = function bindEvent($frm){
 
 
 
-    var radio_count = $(window.app).find('.field-radio-group').length;
-    $frm.find('.field-radio-group').each(function(index, rg){
-        var $rg = $(rg);
-        var id = $rg.data('field-name') + '_' + radio_count;
-        $rg.attr('id', id);
-        $rg.find(':input').attr('name', id).attr('data-parsley-errors-container','#' + id);
-    })
+    // var radio_count = $(window.app).find('.field-radio-group').length;
+    // $frm.find('.field-radio-group').each(function(index, rg){
+    //     var $rg = $(rg);
+    //     var id = $rg.data('field-name') + '_' + radio_count;
+    //     $rg.attr('id', id);
+    //     $rg.find(':input').attr('name', id).attr('data-parsley-errors-container','#' + id);
+    // })
 
-    var checkbox_count = $(window.app).find('.field-checkbox-group').length;
-    $frm.find('.field-checkbox-group').each(function(index, cg){
-        var $cg = $(cg);
-        var id = $cg.data('field-name') + '_' + checkbox_count;
-        $cg.attr('id', id);
-        $cg.find(':input').attr('name', id + '[]').attr('data-parsley-errors-container','#' + id);;
-    })
+    // var checkbox_count = $(window.app).find('.field-checkbox-group').length;
+    // $frm.find('.field-checkbox-group').each(function(index, cg){
+    //     var $cg = $(cg);
+    //     var id = $cg.data('field-name') + '_' + checkbox_count;
+    //     $cg.attr('id', id);
+    //     $cg.find(':input').attr('name', id + '[]').attr('data-parsley-errors-container','#' + id);;
+    // })
 
 
 
@@ -102,7 +106,7 @@ Form.prototype.render = function render(){
 }
 
 Form.prototype.data = function data(){
-    
+
 }
 String.prototype.wrapFormGroup = function wrapFormGroup(name=""){
         return '<div class="form-group">' + this + '</div>';
