@@ -1,4 +1,5 @@
-function WizardManager(fc){
+function WizardManager(parent_form){
+    const fc = parent_form.form_content;
     const frmLen = fc.length;
     this.app = $('#app');
     this.currentWiz = 0;
@@ -13,6 +14,7 @@ function WizardManager(fc){
         this.render()
         this.bind();
         self.$wzrd[self.currentWiz].addClass('active')
+        this.getData();
     }
 
     this.render = function render() {
@@ -44,7 +46,7 @@ function WizardManager(fc){
             }
 
         
-            var wz = new Wizard(frm);
+            var wz = new Wizard(frm, parent_form.id);
             var $renderd = wz.render(btn);
 
 
@@ -93,6 +95,68 @@ function WizardManager(fc){
         
     }
 
+    this.getData = function getData(){
+        
+        var subforms = [];
+        var components = window.app.Components;
+        var $componetns = this.app.find('.parent-component');
+
+        var parentForm = {
+            type:'form',
+            id:1,
+            data: {
+            }
+        };
+
+        $componetns.each(function(index, com){
+            let $comp = $(com);
+            const ftype = $comp.data('field-type')
+
+            //  **  If component is a subform ** //
+
+            if(ftype === "subform"){
+                var subForm = {
+                    type:'subform',
+                    id:$comp.children().data('form-id'),
+                    parent_id:$comp.data('form-id'),
+                    data: []
+                }
+                //  **  get all subform ** //
+                let $subforms = $comp.find('.form');
+
+                $.each($subforms, function(si, subf){
+                    var subFcomp = {};
+                    let $subf = $(subf);
+                    var $subCom = $subf.find('.subform-component');
+
+                    // ** get all components of specific subform ** //
+                    $subCom.each(function(index, sfc){
+                        let $sfc = $(sfc);
+                        let sftype = $sfc.data('field-type');
+
+                        if(components['read-' + sftype]){
+                            subFcomp[$sfc.data('field-name')] = components['read-' + sftype]($sfc)
+                        }
+                    })
+                    
+                    subForm.data.push(subFcomp);
+
+                })
+
+                subforms.push(subForm);
+            }else{
+                if(components['read-' + ftype]){
+                    parentForm.data[$comp.data('field-name')] = components['read-' + ftype]($comp)
+                }
+            }
+     
+        })
+
+        return [].concat(parentForm, subforms);
+ 
+    }
+
+   
 
     function validate() {
         self.$wzrd[self.currentWiz].find(':input').attr('data-parsley-group','block-'+self.currentWiz);

@@ -3,12 +3,11 @@ $(document).ready(function(){
     
     $.get('http://events.enlo.digital/api/event/1', function(res){
         res.form_content = JSON.parse(res.form_content);
-    
-        var wizz = new WizardManager(res.form_content);        
+        var wizz = new WizardManager(res);        
         wizz.init();
+        window.app.wizz = wizz;
     })
-    
-    
+
 });
 
 

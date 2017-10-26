@@ -1,6 +1,8 @@
-function Form(fields, parent_id){
+function Form(fields, id = null, parent_id = null){
     this.fields = fields
-    this.parent_id = parent_id || null
+    this.parent_id = parent_id;
+    this.id = id;
+  
 }
 
 function populateSelect($select, list, val, desc, placeholder=""){
@@ -77,15 +79,17 @@ Form.prototype.bindEvent = function bindEvent($frm){
     // $(':input').attr('data-parsley-group',1)
 }
 
-Form.prototype.render = function(){
+Form.prototype.render = function render(){
     var components = app.Components;
-    let $form = $('<div class="form"></div>')
+    let $form = $('<div class="form"  data-form-id="'+this.id+' data-form-parent-id="'+this.parent_id+' "></div>')
     let col = 1;
+    let self = this;
+    
     $.each(this.fields, function(i, field){
         if(components[field.field_type]!==undefined){
 
-            $form.append(components[field.field_type](field)
-                    .wrapComponent(field)
+            $form.append(components[field.field_type].call(self,field)
+                    .wrapComponent(field, self.id, self.parent_id)
                     .wrapCol(field.field_type==='subform'? 0 : field['field-col']));
         }
     })
@@ -97,12 +101,11 @@ Form.prototype.render = function(){
 
 }
 
+Form.prototype.data = function data(){
+    
+}
 String.prototype.wrapFormGroup = function wrapFormGroup(name=""){
         return '<div class="form-group">' + this + '</div>';
-}
-
-String.prototype.wrapComponent = function wrapComponent(field){
-    return `<div class="form-group component" data-field-type="${field.field_type}" data-field-name="${field['field-name']}">${this}</div>`
 }
 
 

@@ -1,6 +1,7 @@
-function Wizard(wz){
+function Wizard(wz,id){
     this.name = wz.name; 
     this.fields = wz.fields;
+    this.id = id;
 }
 
 Wizard.prototype.render = function render (btn) {
@@ -18,9 +19,9 @@ Wizard.prototype.render = function render (btn) {
         $content.find('.action-bottom').append(actionTemplate(btn))
     })
 
-    var form = new Form(this.fields);
-
-    $content.find('.form-content').append(form.render())
+    var form = new Form(this.fields, this.id);
+    $form = form.render();
+    $content.find('.form-content').append($form)
 
     return $content;
 }

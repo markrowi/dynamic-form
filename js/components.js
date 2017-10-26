@@ -119,8 +119,7 @@
             }
 
     function SubformComponent(comp){
-        
-        var frm = new Form(comp.fields);
+        var frm = new Form(comp.fields, comp['form_id'], this.id);
         window.app = window.app || {};
         window.app.subforms = window.app.subforms || [];
         window.app.subforms[comp['form_id']] = frm;
@@ -147,9 +146,43 @@
     components['radio'] = RadioComponent;
     components['checkbox'] = CheckboxComponent;
     components['subform'] = SubformComponent;
-    
+
+
+
+    function readInput($comp){
+        var inputs = []
+        $comp.find(':input').each(function(index, inp){
+            inputs.push($(inp).val());
+        })
+
+        return inputs.join('||');
+    }
+
+    function readOption($comp){
+        var inputs = []
+        $comp.find(':checked').each(function(index, inp){
+            inputs.push($(inp).val());
+        })
+
+        return inputs.join('||');
+       
+    }
+
+    components['read-textbox'] = readInput;
+    components['read-textarea'] = readInput;
+    components['read-date'] = readInput;
+    components['read-location'] = readInput;
+    components['read-email'] = readInput;
+    components['read-dropdown'] = readInput;
+    components['read-radio'] = readOption;
+    components['read-checkbox'] = readOption;
 
     window.app = window.app || {};
     window.app.Components = components;
     
 })();
+
+
+String.prototype.wrapComponent = function wrapComponent(field, id="", parent_id=null){
+    return `<div class="form-group component ${parent_id?"subform-component":"parent-component"}" data-form-id="${id}" data-field-type="${field.field_type}" data-field-name="${field['field-name']}">${this}</div>`
+}
