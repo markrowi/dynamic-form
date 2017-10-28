@@ -106,10 +106,10 @@
      
         let random  =new Date().getMilliseconds();
         return `<label  for="">${comp['field-label']}</label>
-                <div class="form-group field-radio-group"  data-field-name="${comp['field-name']}" placeholder="">
+                <div class="form-group field-radio-group" id="${comp['field-name'] + '_' + random}" data-field-name="${comp['field-name']}" placeholder="">
                 ${
                     $.map(comp['field-options'],function(opt, index){
-                    return  `<div class="radio"><label><input type="radio" name="${comp['field-name'] + '_' + random}" ${comp['value']===opt.value?'checked':''} ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
+                    return  `<div class="radio"><label><input type="radio" name="${comp['field-name'] + '_' + random}" data-parsley-errors-container="#${comp['field-name'] + '_' + random}" ${comp['value']===opt.value?'checked':''} ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
                     }).join(' ')
                 }
                 </div>`;
@@ -119,10 +119,10 @@
         let random  =new Date().getMilliseconds();
         let checked = comp['value']?comp['value'].split('||'):[]
         return `<label  for="">${comp['field-label']}</label>
-                <div class="form-group field-checkbox-group" data-field-name="${comp['field-name']}" placeholder="">
+                <div class="form-group field-checkbox-group" id="${comp['field-name'] + '_' + random}"  data-field-name="${comp['field-name']}" placeholder="">
                 ${
                     $.map(comp['field-options'],function(opt, index){
-                    return  `<div class="checkbox"><label><input ${checked.indexOf(opt.value)?'checked':''} name="${comp['field-name'] + '_' + random + '[]'}" type="checkbox" ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
+                    return  `<div class="checkbox"><label><input ${checked.indexOf(opt.value)?'checked':''} name="${comp['field-name'] + '_' + random + '[]'}" data-parsley-errors-container="#${comp['field-name'] + '_' + random}" type="checkbox" ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
                     }).join(' ')
                 }
                 </div>`;

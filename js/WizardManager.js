@@ -59,17 +59,36 @@ function WizardManager(parent_form){
     }
 
     this.bind = function bind(){
-        self.app.on('click','.actions .btn[data-action="NEXT"]', function(){
+        // self.app.on('click','.actions .btn[data-action="NEXT"]', function(){
+        //     // Validation;
+        //     if(validate()){
+        //         next();
+        //     }
+            
+        // })
+
+        self.app.on('click','.actions .btn', function(){
             // Validation;
-            if(validate()){
-                next();
+            var $this = $(this);
+            var action = $this.data('action');
+            if(action==='NEXT'){
+                if(validate()){
+                    next();
+                }
+            }else if(action === 'BACK'){
+                back()
+            }else if(action === 'SUBMIT'){
+                if(validate()){
+                    submit();
+                }
             }
+            
             
         })
 
-        self.app.on('click','.actions .btn[data-action="BACK"]', function(){
-              back()
-          })
+        // self.app.on('click','.actions .btn[data-action="BACK"]', function(){
+        //       back()
+        //   })
         
         self.app.on('click', '.subform-add', function(){
             var $this = $(this);
@@ -170,6 +189,18 @@ function WizardManager(parent_form){
     function next(){
         self.$wzrd[self.currentWiz].removeClass('active');
         self.$wzrd[++self.currentWiz].addClass('active');
+    }
+
+    function submit(){
+        if(window.app.saveUrl!==''){
+            $.post({
+                url:window.app.saveUrl, 
+                data: datawindow.app.wizz.getData()
+            })
+        
+        }
+        
+        console.log(window.app.wizz.getData())    
     }
 
     function back(){
