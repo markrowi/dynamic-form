@@ -5,7 +5,7 @@ function Wizard(wz,id){
 }
 
 Wizard.prototype.render = function render (btn) {
-    $content = $(`<div class="container-fluid wizard" data-wizard=${this.name}>
+    var $content = $(`<div class="container-fluid wizard" data-wizard=${this.name}>
                 <div class="row actions action-top"></div>
                 <div class="row form-content"><h1>${this.name}</h1></div>
                 <div class="row actions action-bottom"></div>
@@ -19,8 +19,8 @@ Wizard.prototype.render = function render (btn) {
         $content.find('.action-bottom').append(actionTemplate(btn))
     })
 
-    var form = new Form(this.fields, this.id);
-    $form = form.render();
+    let form = new Form(this.fields, this.id);
+    let $form = form.render();
     $content.find('.form-content').append($form)
 
     return $content;
