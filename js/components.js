@@ -125,7 +125,9 @@
                 <div class="form-group field-checkbox-group" id="${comp['field-name'] + '_' + random}"  data-field-name="${comp['field-name']}" placeholder="">
                 ${
                     $.map(comp['field-options'],function(opt, index){
-                    return  `<div class="checkbox"><label><input ${checked.indexOf(opt.value)?'checked':''} name="${comp['field-name'] + '_' + random + '[]'}" data-parsley-errors-container="#${comp['field-name'] + '_' + random}" type="checkbox" ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
+                    return  `<div class="checkbox">
+                        <label>
+                            <input ${checked.indexOf(opt.value)>-1?'checked':''} name="${comp['field-name'] + '_' + random + '[]'}" data-parsley-errors-container="#${comp['field-name'] + '_' + random}" type="checkbox" ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
                     }).join(' ')
                 }
                 </div>`;

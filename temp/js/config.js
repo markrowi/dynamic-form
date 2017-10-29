@@ -22,4 +22,5 @@ $(document).ready(function () {
   if (form_id || url) {
     window.app.getUrl = url + '/api/event/' + form_id;
   }
+  // window.app.getUrl = 'http://events.enlo.digital/api/event/16/record/10';
 });
