@@ -1,0 +1,29 @@
+body {
+    padding-top: 50px;
+  }
+  .starter-template {
+    padding: 40px 15px;
+    text-align: center;
+  }
+
+.wizard {
+  display: none;
+}
+
+.wizard.active{
+  display: block;
+}
+
+.actions {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+textarea {
+  resize: none;
+}
+
+.subform > .container-fluid{
+  border:1px #ccc solid;
+  margin-bottom: 10px;
+}
