@@ -1,6 +1,7 @@
 (function(){
     var components = []
     function TextBoxComponent(comp){
+        comp['value'] = comp['value'] || "";
         return `
         <label for="">${comp['field-label']}</label>
         <input 
@@ -14,6 +15,7 @@
     }
     
     function EmailComponent(comp){
+        comp['value'] = comp['value'] || "";
         return `
         <label for="">${comp['field-label']}</label>
         <input 
@@ -27,7 +29,6 @@
     }
     
     function LocationComponent(comp){
-        console.log(comp.value)
         let loc = comp.value?comp.value.split('||') : ["",""];
         return `
         <label for="">Province</label>
@@ -54,6 +55,7 @@
     }
     
     function DateComponent(comp){
+        comp['value'] = comp['value'] || "";
         return `
         <label for="">${comp['field-label']}</label>
         <div class="input-group date">
@@ -70,6 +72,7 @@
     }
     
     function TextAreaComponent(comp){
+        comp['value'] = comp['value'] || "";
         return `
         <label  for="">${comp['field-label']}</label>
         <textarea 
@@ -139,26 +142,29 @@
         window.app.subforms[comp['form_id']] = frm;
         var self = this;
         
-        console.log('subform', comp)
         if(comp.value){
             $.each(comp.value, function(ind, vSub){
                 var newSub = {id:vSub.id, 'form_id':comp['form_id'], 'parent_id':self.id, fields:[]};
                 
 
                 $.each(comp.fields, function(index, nsub){
-                    newSub.fields.push({
-                        ...nsub, 
-                        value: (vSub[(nsub['field-name'] + '').toLowerCase()] || "") 
-                    });
-
-                    // nsub.value = vSub[(nsub['field-name'] + '').toLowerCase()];
-                    // console.log('value',(nsub['field-name'] + '').toLowerCase(), vSub[(nsub['field-name'] + '').toLowerCase()], nsub, vSub)
+                    newSub.fields.push(_extends({}, nsub, {
+                        value: vSub[(nsub['field-name'] + '').toLowerCase()] || ""
+                    }));
                 })
-                // console.log(newSub)
+
+                //ES6 Code
+                // {
+                //     ...nsub, 
+                //     value: (vSub[(nsub['field-name'] + '').toLowerCase()] || "") 
+                // }
+
+                
                 subforms.push(newSub);
             })
             subformsHtml =  subforms.map(function(sform){
-                let tempFrm = new Form(sform.fields, sform['form_id'], self.id);
+                
+                let tempFrm = new Form(sform.fields, sform['form_id'], self.id, sform.id); // Insert data id here
                 // console.log('sform', sform)
                 return tempFrm.render()[0].outerHTML
             }).join('');
@@ -226,5 +232,5 @@
 
 
 String.prototype.wrapComponent = function wrapComponent(field, id="", parent_id=null){
-    return `<div class="form-group component ${parent_id?"subform-component":"parent-component"}" data-form-id="${id}" data-field-type="${field.field_type}" data-field-name="${field['field-name']}">${this}</div>`
+    return `<div class="form-group component ${parent_id?"subform-component":"parent-component"}" data-form-id="${id}" data-field-type="${field.field_type}" data-field-name="${field['field-name']||field['form-name']}">${this}</div>`
 }

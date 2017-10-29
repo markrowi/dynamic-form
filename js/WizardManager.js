@@ -13,12 +13,14 @@ function WizardManager(parent_form){
     this.init = function init(){
         this.render()
         this.bind();
+        self.app.attr('data-record-id', parent_form.record_id || null)
         self.$wzrd[self.currentWiz].addClass('active')
         this.getData();
     }
 
     this.render = function render() {
-        $.each(fc, (index, frm)=>{
+        
+        $.each(fc, function(index, frm){
             // console.log(frm)
             let btn = {
                 top: [],
@@ -45,8 +47,8 @@ function WizardManager(parent_form){
                 })       
             }
 
-        
-            var wz = new Wizard(frm, parent_form.id);
+            
+            var wz = new Wizard(frm, parent_form.id,null, parent_form.record_id);
             var $renderd = wz.render(btn);
 
 
@@ -55,22 +57,16 @@ function WizardManager(parent_form){
             window.app.wizards[wz.name] = wz;
             self.$wzrd.push($renderd);
             this.app.append($renderd)
-        })
+        }.bind(this))
     }
 
     this.bind = function bind(){
-        // self.app.on('click','.actions .btn[data-action="NEXT"]', function(){
-        //     // Validation;
-        //     if(validate()){
-        //         next();
-        //     }
-            
-        // })
+      
 
         self.app.on('click','.actions .btn', function(){
-            // Validation;
             var $this = $(this);
             var action = $this.data('action');
+
             if(action==='NEXT'){
                 if(validate()){
                     next();
@@ -86,10 +82,6 @@ function WizardManager(parent_form){
             
         })
 
-        // self.app.on('click','.actions .btn[data-action="BACK"]', function(){
-        //       back()
-        //   })
-        
         self.app.on('click', '.subform-add', function(){
             var $this = $(this);
             var formId = $this.data('form-id');
@@ -105,7 +97,6 @@ function WizardManager(parent_form){
         })
 
         $.each(self.$wzrd, function(index, $wiz){
-            console.log($wiz)
             $wiz.attr('data-wiz-step',index);
             
         })
@@ -119,10 +110,11 @@ function WizardManager(parent_form){
         var subforms = [];
         var components = window.app.Components;
         var $componetns = this.app.find('.parent-component');
-
+        var self = this;
         var parentForm = {
             type:'form',
-            id:1,
+            id:parent_form.id,
+            record_id:parent_form.record_id,
             data: {
             }
         };
@@ -144,9 +136,15 @@ function WizardManager(parent_form){
                 let $subforms = $comp.find('.form');
 
                 $.each($subforms, function(si, subf){
-                    var subFcomp = {};
                     let $subf = $(subf);
                     var $subCom = $subf.find('.subform-component');
+
+                    var subFcomp = {
+                        id:$subf.data('record-id'),
+                        parent_id:subForm.parent_id,
+                        form_id:subForm.id
+                    };
+                    
 
                     // ** get all components of specific subform ** //
                     $subCom.each(function(index, sfc){
@@ -154,7 +152,7 @@ function WizardManager(parent_form){
                         let sftype = $sfc.data('field-type');
 
                         if(components['read-' + sftype]){
-                            subFcomp[$sfc.data('field-name')] = components['read-' + sftype]($sfc)
+                            subFcomp[$sfc.data('field-name')    ] = components['read-' + sftype]($sfc)
                         }
                     })
                     
@@ -195,7 +193,7 @@ function WizardManager(parent_form){
         if(window.app.saveUrl!==''){
             $.post({
                 url:window.app.saveUrl, 
-                data: datawindow.app.wizz.getData()
+                data: window.app.wizz.getData()
             })
         
         }
