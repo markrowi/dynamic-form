@@ -106,7 +106,7 @@ function WizardManager(parent_form) {
         var self = this;
         var parentForm = {
             type: 'form',
-            id: parent_form.id,
+            form_id: parent_form.id,
             record_id: parent_form.record_id,
             data: {}
         };
@@ -120,7 +120,7 @@ function WizardManager(parent_form) {
             if (ftype === "subform") {
                 var subForm = {
                     type: 'subform',
-                    id: $comp.children().data('form-id'),
+                    form_id: $comp.children().data('form-id'),
                     parent_id: $comp.data('form-id'),
                     data: []
                     //  **  get all subform ** //
