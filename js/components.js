@@ -112,7 +112,14 @@
                 <div class="form-group field-radio-group" id="${comp['field-name'] + '_' + random}" data-field-name="${comp['field-name']}" placeholder="">
                 ${
                     $.map(comp['field-options'],function(opt, index){
-                    return  `<div class="radio"><label><input type="radio" name="${comp['field-name'] + '_' + random}" data-parsley-errors-container="#${comp['field-name'] + '_' + random}" ${comp['value']===opt.value?'checked':''} ${comp['field-required']?'required':''}  value="${opt.value}">${opt.label}</label></div>`;
+                    return  `<div class="radio">
+                        <label>
+                            <input type="radio" 
+                            name="${comp['field-name'] + '_' + random}" 
+                            data-parsley-errors-container="#${comp['field-name'] + '_' + random}" 
+                            ${comp['value']===opt.value?'checked':''} 
+                            ${comp['field-required']?'required':''}  
+                            value="${opt.value}">${opt.label}</label></div>`;
                     }).join(' ')
                 }
                 </div>`;
@@ -168,7 +175,7 @@
                 
                 let tempFrm = new Form(sform.fields, sform['form_id'], self.id, sform.id); // Insert data id here
                 // console.log('sform', sform)
-                return tempFrm.render()[0].outerHTML
+                return tempFrm.render()[0].outerHTML.wrapSubform();
             }).join('');
         }
         // console.log('subformsHtml', subformsHtml)
@@ -177,7 +184,7 @@
         return `<div class="subform" data-type="subform" data-form-id="${comp['form_id']}">
                     <label for="">${comp['field-label']}</label>
                     <div class="container-fluid subform-content">
-                       ${subformsHtml===""?frm.render()[0].outerHTML:subformsHtml}</div>
+                       ${subformsHtml===""?frm.render()[0].outerHTML.wrapSubform():subformsHtml}</div>
                     <div class="form-group pull-right"> <input type="button" data-form-id=${comp['form_id']} class="btn btn-primary subform-add" value="+ Add"/></div>
                     <div class="clearfix"></div>
                 </div>`;
@@ -235,4 +242,16 @@
 
 String.prototype.wrapComponent = function wrapComponent(field, id="", parent_id=null){
     return `<div class="form-group component ${parent_id?"subform-component":"parent-component"}" data-form-id="${id}" data-field-type="${field.field_type}" data-field-name="${field['field-name']||field['form-name']}">${this}</div>`
+}
+
+String.prototype.wrapSubform = function wrapSubform(){
+    return `<div class="subform-wrapper">
+    <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-2">
+            <a class="subform-remove">Remove</a>
+        </div>
+    </div>
+    ${this}
+    </div>`
 }

@@ -81,14 +81,12 @@ function WizardManager(parent_form) {
             var $this = $(this);
             var formId = $this.data('form-id');
             var $subformContent = self.app.find('.subform[data-form-id="' + formId + '"]>.subform-content');
-            $subformContent.append(window.app.subforms[formId].render());
+            $subformContent.append(window.app.subforms[formId].render()[0].outerHTML.wrapSubform());
         });
 
         self.app.on('click', '.subform-remove', function () {
             var $this = $(this);
-            var formId = $this.data('form-id');
-            var $subformContent = self.app.find('.subform[data-form-id="' + formId + '"]>.subform-content');
-            $subformContent.append(window.app.subforms[formId].render());
+            $this.closest('.subform-wrapper').remove();
         });
 
         $.each(self.$wzrd, function (index, $wiz) {
@@ -107,6 +105,7 @@ function WizardManager(parent_form) {
         var parentForm = {
             type: 'form',
             form_id: parent_form.id,
+            parent_id: 0,
             record_id: parent_form.record_id,
             data: {}
         };

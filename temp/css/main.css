@@ -27,3 +27,17 @@ textarea {
   border:1px #ccc solid;
   margin-bottom: 10px;
 }
+
+.subform-wrapper {
+  border-top: #eee solid 1px;
+  /* margin-top: 10px; */
+  padding-top: 10px;
+}
+
+.subform-wrapper:first-child{
+  border-top: 0;
+}
+
+.subform-remove{
+  cursor: pointer;
+}
