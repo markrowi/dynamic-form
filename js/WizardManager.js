@@ -192,7 +192,9 @@ function WizardManager(parent_form){
         if(window.app.saveUrl!==''){
             $.post({
                 url:window.app.saveUrl, 
-                data: window.app.wizz.getData()
+                data: {
+                    'request_data':JSON.stringify(window.app.wizz.getData())
+                }
             })
         
         }
