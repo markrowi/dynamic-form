@@ -28,7 +28,7 @@ function WizardManager(parent_form) {
                 bottom: []
                 //Btn
             };if (index !== 0) {
-                btn.top.push({
+                btn.bottom.push({
                     label: 'Back',
                     action: 'BACK'
                 });

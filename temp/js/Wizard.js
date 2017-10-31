@@ -12,8 +12,9 @@ Wizard.prototype.render = function render(btn) {
     $.each(btn.top, function (i, btn) {
         $content.find('.action-top').append(actionTemplate(btn));
     });
+    var bBtnCol = 12 / btn.bottom.length;
     $.each(btn.bottom, function (i, btn) {
-        $content.find('.action-bottom').append(actionTemplate(btn));
+        $content.find('.action-bottom').append(actionTemplate(btn, bBtnCol));
     });
 
     var form = new Form(this.fields, this.id);
@@ -23,6 +24,6 @@ Wizard.prototype.render = function render(btn) {
     return $content;
 };
 
-function actionTemplate(btn) {
-    return '<div class="col-md-12">\n            <input type="button" name="" data-action="' + btn.action + '" class="btn btn-primary form-control" id="" value="' + btn.label + '">\n        </div>';
+function actionTemplate(btn, col) {
+    return '<div class="col-md-' + col + ' col-sm-12">\n            <input type="button" name="" data-action="' + btn.action + '" class="btn btn-primary form-control" id="" value="' + btn.label + '">\n        </div>';
 }

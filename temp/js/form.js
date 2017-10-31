@@ -35,7 +35,6 @@ Form.prototype.bindEvent = function bindEvent($frm) {
 
             window.app.Provinces = res;
             $.each($frm.find('.field-location-province'), function (index, prv) {
-
                 populateSelect($(prv), res, 'provDesc', 'provDesc', "Select Province");
             });
         });
@@ -45,9 +44,9 @@ Form.prototype.bindEvent = function bindEvent($frm) {
         });
     }
 
-    $frm.find('.field-location-province').on('change', function () {
+    $frm.on('change', '.field-location-province', function () {
         var $this = $(this);
-        var $city = $this.parent().parent().find('.field-location-city');
+        var $city = $this.closest('.component').find('.field-location-city');
 
         if ($this.val() !== '') {
             $city.prop('disabled', false);
