@@ -86,7 +86,7 @@ function WizardManager(parent_form){
             var $this = $(this);
             var formId = $this.data('form-id');
             var $subformContent = self.app.find('.subform[data-form-id="' + formId  + '"]>.subform-content');
-            $subformContent.append(window.app.subforms[formId].render()[0].outerHTML.wrapSubform());
+            $subformContent.append(window.app.subforms[formId].render(true).wrapSubform());
         })
 
         self.app.on('click', '.subform-remove', function(){
@@ -111,6 +111,7 @@ function WizardManager(parent_form){
         var self = this;
         var parentForm = {
             type:'form',
+            pre_register:1,
             form_id:parent_form.id,
             parent_id:0,
             record_id:parent_form.record_id,
@@ -127,6 +128,7 @@ function WizardManager(parent_form){
             if(ftype === "subform"){
                 var subForm = {
                     type:'subform',
+                    pre_register:1,
                     form_id:$comp.children().data('form-id'),
                     parent_id:$comp.data('form-id'),
                     data: []
@@ -139,7 +141,7 @@ function WizardManager(parent_form){
                     var $subCom = $subf.find('.subform-component');
 
                     var subFcomp = {
-                        id:$subf.data('record-id'),
+                        record_id:$subf.data('record-id'),
                         parent_id:subForm.parent_id,
                         form_id:subForm.id
                     };
@@ -151,7 +153,7 @@ function WizardManager(parent_form){
                         let sftype = $sfc.data('field-type');
 
                         if(components['read-' + sftype]){
-                            subFcomp[$sfc.data('field-name')    ] = components['read-' + sftype]($sfc)
+                            subFcomp[$sfc.data('field-name')] = components['read-' + sftype]($sfc)
                         }
                     })
                     

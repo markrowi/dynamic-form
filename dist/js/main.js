@@ -92,13 +92,13 @@
 
                 var tempFrm = new Form(sform.fields, sform['form_id'], self.id, sform.id); // Insert data id here
                 // console.log('sform', sform)
-                return tempFrm.render()[0].outerHTML.wrapSubform();
+                return tempFrm.render(true).wrapSubform();
             }).join('');
         }
         // console.log('subformsHtml', subformsHtml)
         // frm = new Form(comp.fields, comp['form_id'], this.id);
 
-        return '<div class="subform" data-type="subform" data-form-id="' + comp['form_id'] + '">\n                    <label for="">' + comp['field-label'] + '</label>\n                    <div class="container-fluid subform-content">\n                       ' + (subformsHtml === "" ? frm.render()[0].outerHTML.wrapSubform() : subformsHtml) + '</div>\n                    <div class="form-group pull-right"> <input type="button" data-form-id=' + comp['form_id'] + ' class="btn btn-primary subform-add" value="+ Add"/></div>\n                    <div class="clearfix"></div>\n                </div>';
+        return '<div class="subform" data-type="subform" data-form-id="' + comp['form_id'] + '">\n                    <label for="">' + comp['field-label'] + '</label>\n                    <div class="container-fluid subform-content">\n                       ' + (subformsHtml === "" ? frm.render(true).wrapSubform() : subformsHtml) + '</div>\n                    <div class="form-group pull-right"> <input type="button" data-form-id=' + comp['form_id'] + ' class="btn btn-primary subform-add" value="+ Add"/></div>\n                    <div class="clearfix"></div>\n                </div>';
     }
 
     components['label'] = LabelComponent;
@@ -148,7 +148,7 @@ String.prototype.wrapComponent = function wrapComponent(field) {
     var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
     var parent_id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-    return '<div class="form-group component ' + (parent_id ? "subform-component" : "parent-component") + '" data-form-id="' + id + '" data-field-type="' + field.field_type + '" data-field-name="' + (field['field-name'] || field['form-name']) + '">' + this + '</div>';
+    return '<div class="form-group component ' + (parent_id ? "subform-component" : "parent-component") + '" \n        data-form-id="' + id + '" \n        data-field-type="' + field.field_type + '" \n        data-field-name="' + (field['field-name'] || field['form-name']) + '">\n            ' + this + '\n        </div>';
 };
 
 String.prototype.wrapSubform = function wrapSubform() {
@@ -237,7 +237,7 @@ function WizardManager(parent_form) {
             var $this = $(this);
             var formId = $this.data('form-id');
             var $subformContent = self.app.find('.subform[data-form-id="' + formId + '"]>.subform-content');
-            $subformContent.append(window.app.subforms[formId].render()[0].outerHTML.wrapSubform());
+            $subformContent.append(window.app.subforms[formId].render(true).wrapSubform());
         });
 
         self.app.on('click', '.subform-remove', function () {
@@ -260,6 +260,7 @@ function WizardManager(parent_form) {
         var self = this;
         var parentForm = {
             type: 'form',
+            pre_register: 1,
             form_id: parent_form.id,
             parent_id: 0,
             record_id: parent_form.record_id,
@@ -275,6 +276,7 @@ function WizardManager(parent_form) {
             if (ftype === "subform") {
                 var subForm = {
                     type: 'subform',
+                    pre_register: 1,
                     form_id: $comp.children().data('form-id'),
                     parent_id: $comp.data('form-id'),
                     data: []
@@ -286,7 +288,7 @@ function WizardManager(parent_form) {
                     var $subCom = $subf.find('.subform-component');
 
                     var subFcomp = {
-                        id: $subf.data('record-id'),
+                        record_id: $subf.data('record-id'),
                         parent_id: subForm.parent_id,
                         form_id: subForm.id
                     };
@@ -439,7 +441,7 @@ Form.prototype.bindEvent = function bindEvent($frm) {
     // $(':input').attr('data-parsley-group',1)
 };
 
-Form.prototype.render = function render() {
+Form.prototype.render = function render(isHtml) {
     var components = app.Components;
     var $form = $('<div class="form" data-record-id="' + this.record_id + '"  data-form-id="' + this.id + '" data-form-parent-id="' + this.parent_id + ' "></div>');
     var col = 1;
@@ -455,7 +457,7 @@ Form.prototype.render = function render() {
     this.bindEvent($form);
     $form.append('<div class="clearfix"></div>');
 
-    return $form;
+    return isHtml ? $form[0].outerHTML : $form;
 };
 
 Form.prototype.data = function data() {};

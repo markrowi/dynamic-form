@@ -92,13 +92,13 @@
 
                 var tempFrm = new Form(sform.fields, sform['form_id'], self.id, sform.id); // Insert data id here
                 // console.log('sform', sform)
-                return tempFrm.render()[0].outerHTML.wrapSubform();
+                return tempFrm.render(true).wrapSubform();
             }).join('');
         }
         // console.log('subformsHtml', subformsHtml)
         // frm = new Form(comp.fields, comp['form_id'], this.id);
 
-        return '<div class="subform" data-type="subform" data-form-id="' + comp['form_id'] + '">\n                    <label for="">' + comp['field-label'] + '</label>\n                    <div class="container-fluid subform-content">\n                       ' + (subformsHtml === "" ? frm.render()[0].outerHTML.wrapSubform() : subformsHtml) + '</div>\n                    <div class="form-group pull-right"> <input type="button" data-form-id=' + comp['form_id'] + ' class="btn btn-primary subform-add" value="+ Add"/></div>\n                    <div class="clearfix"></div>\n                </div>';
+        return '<div class="subform" data-type="subform" data-form-id="' + comp['form_id'] + '">\n                    <label for="">' + comp['field-label'] + '</label>\n                    <div class="container-fluid subform-content">\n                       ' + (subformsHtml === "" ? frm.render(true).wrapSubform() : subformsHtml) + '</div>\n                    <div class="form-group pull-right"> <input type="button" data-form-id=' + comp['form_id'] + ' class="btn btn-primary subform-add" value="+ Add"/></div>\n                    <div class="clearfix"></div>\n                </div>';
     }
 
     components['label'] = LabelComponent;
@@ -148,7 +148,7 @@ String.prototype.wrapComponent = function wrapComponent(field) {
     var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
     var parent_id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-    return '<div class="form-group component ' + (parent_id ? "subform-component" : "parent-component") + '" data-form-id="' + id + '" data-field-type="' + field.field_type + '" data-field-name="' + (field['field-name'] || field['form-name']) + '">' + this + '</div>';
+    return '<div class="form-group component ' + (parent_id ? "subform-component" : "parent-component") + '" \n        data-form-id="' + id + '" \n        data-field-type="' + field.field_type + '" \n        data-field-name="' + (field['field-name'] || field['form-name']) + '">\n            ' + this + '\n        </div>';
 };
 
 String.prototype.wrapSubform = function wrapSubform() {

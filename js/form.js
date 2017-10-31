@@ -63,7 +63,7 @@ Form.prototype.bindEvent = function bindEvent($frm){
     // $(':input').attr('data-parsley-group',1)
 }
 
-Form.prototype.render = function render(){
+Form.prototype.render = function render(isHtml){
     var components = app.Components;
     let $form = $('<div class="form" data-record-id="'+this.record_id+'"  data-form-id="'+this.id+'" data-form-parent-id="'+this.parent_id+' "></div>')
     let col = 1;
@@ -81,7 +81,7 @@ Form.prototype.render = function render(){
     this.bindEvent($form)
     $form.append('<div class="clearfix"></div>')
     
-    return $form
+    return isHtml ? $form[0].outerHTML : $form;
 
 }
 
