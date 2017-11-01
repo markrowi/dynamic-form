@@ -25,5 +25,5 @@ Wizard.prototype.render = function render(btn) {
 };
 
 function actionTemplate(btn, col) {
-    return '<div class="col-md-' + col + ' col-sm-12">\n            <input type="button" name="" data-action="' + btn.action + '" class="btn btn-primary form-control" id="" value="' + btn.label + '">\n        </div>';
+    return '<div class="col-md-' + col + ' col-sm-12">\n            <input type="button" name="" data-action="' + btn.action + '" class="btn btn-primary btn-block" id="" value="' + btn.label + '">\n        </div>';
 }

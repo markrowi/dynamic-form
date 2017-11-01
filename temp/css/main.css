@@ -1,5 +1,12 @@
+html{
+  font-size: 14px;
+}
+
 body {
     padding-top: 50px;
+    color: white; 
+    background-color: #ED4597;
+    font-size: 1.2em;
   }
   .starter-template {
     padding: 40px 15px;
@@ -14,6 +21,12 @@ body {
   display: block;
 }
 
+.form-content > h1 {
+  border-bottom: 1px solid;  
+  padding-bottom: 20px;
+  margin-bottom: 20px;  
+}
+
 .actions {
   margin-top: 5px;
   margin-bottom: 5px;
@@ -24,12 +37,12 @@ textarea {
 }
 
 .subform > .container-fluid{
-  border:1px #ccc solid;
+  /* border:1px #ccc solid; */
   margin-bottom: 10px;
 }
 
 .subform-wrapper {
-  border-top: #eee solid 1px;
+  border-bottom: #eee solid 2px;
   /* margin-top: 10px; */
   padding-top: 10px;
 }
@@ -38,6 +51,43 @@ textarea {
   border-top: 0;
 }
 
+
+
+
+/* Buton */
 .subform-remove{
   cursor: pointer;
+}
+
+.form-btn {
+  cursor: pointer;
+}
+
+.form-btn:hover{
+  text-decoration: underline;
+}
+
+
+.form-control{
+  border:3px solid white;
+  height: 40px;
+  font-size: inherit;
+}
+
+
+input.parsley-success,
+select.parsley-success,
+textarea.parsley-success {
+  /* color: #468847; */
+  /* background-color: #DFF0D8; */
+  
+  border: white;
+}
+
+input.parsley-error,
+select.parsley-error,
+textarea.parsley-error {
+  /* color: #B94A48;
+  background-color: #F2DEDE; */
+  border-color: #900;
 }
