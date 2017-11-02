@@ -184,31 +184,45 @@ function WizardManager(parent_form) {
 
     function submit() {
 
-        if (window.app.saveUrl !== '' && confirm("Are you sure you want to submit?")) {
-            $('[data-action="SUBMIT"]').attr('disabled', true);
-            $.post({
-                url: window.app.saveUrl,
-                data: {
-                    'request_data': JSON.stringify(window.app.wizz.getData())
-                },
-                success: function success() {
+        if (window.app.saveUrl !== '') {
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "Yes": function Yes() {
+                        $('[data-action="SUBMIT"]').attr('disabled', true);
+                        $.post({
+                            url: window.app.saveUrl,
+                            data: {
+                                'request_data': JSON.stringify(window.app.wizz.getData())
+                            },
+                            success: function success() {
 
-                    $("#success-message").dialog({
-                        modal: true,
-                        buttons: {
-                            Ok: function Ok() {
-                                if (window.app.redirectUrl) {
-                                    window.location.href = window.app.redirectUrl;
-                                } else {
-                                    window.location.href = "";
-                                }
-                                $(this).dialog("close");
+                                $("#success-message").dialog({
+                                    modal: true,
+                                    buttons: {
+                                        Ok: function Ok() {
+                                            if (window.app.redirectUrl) {
+                                                window.location.href = window.app.redirectUrl;
+                                            } else {
+                                                window.location.href = "";
+                                            }
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+                            },
+                            error: function error() {
+                                $('[data-action="SUBMIT"]').attr('disabled', false);
                             }
-                        }
-                    });
-                },
-                error: function error() {
-                    $('[data-action="SUBMIT"]').attr('disabled', false);
+                        });
+                        $(this).dialog("close");
+                    },
+                    "No": function No() {
+                        $(this).dialog("close");
+                    }
                 }
             });
         }

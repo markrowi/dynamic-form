@@ -203,34 +203,54 @@ function WizardManager(parent_form){
 
     function submit(){
        
-        if(window.app.saveUrl!=='' && confirm("Are you sure you want to submit?")){
-            $('[data-action="SUBMIT"]').attr('disabled',true)
-            $.post({
-                url:window.app.saveUrl, 
-                data: {
-                    'request_data':JSON.stringify(window.app.wizz.getData())
-                },
-                success:function () {
-                   
-                    $( "#success-message" ).dialog({
-                        modal: true,
-                        buttons: {
-                          Ok: function() {
-                            if(window.app.redirectUrl){
-                                window.location.href=window.app.redirectUrl;
-                            }else{
-                                window.location.href="";
-                            }
-                            $( this ).dialog( "close" );
-                          }
+
+
+
+        if(window.app.saveUrl!==''){
+            $( "#dialog-confirm" ).dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                  "Yes": function() {
+                    $('[data-action="SUBMIT"]').attr('disabled',true)
+                    $.post({
+                        url:window.app.saveUrl, 
+                        data: {
+                            'request_data':JSON.stringify(window.app.wizz.getData())
+                        },
+                        success:function () {
+                           
+                            $( "#success-message" ).dialog({
+                                modal: true,
+                                buttons: {
+                                  Ok: function() {
+                                    if(window.app.redirectUrl){
+                                        window.location.href=window.app.redirectUrl;
+                                    }else{
+                                        window.location.href="";
+                                    }
+                                    $( this ).dialog( "close" );
+                                  }
+                                }
+                              });
+                            
+                        },
+                        error:function(){
+                            $('[data-action="SUBMIT"]').attr('disabled',false)
                         }
-                      });
-                    
-                },
-                error:function(){
-                    $('[data-action="SUBMIT"]').attr('disabled',false)
+                    })
+                    $( this ).dialog( "close" );
+                  },
+                  "No": function() {
+                    $( this ).dialog( "close" );
+                  }
                 }
-            })
+              });
+
+
+            
         
         }
 
