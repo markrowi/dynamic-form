@@ -17,6 +17,13 @@ function WizardManager(parent_form) {
         self.app.attr('data-record-id', parent_form.record_id || null);
         self.$wzrd[self.currentWiz].addClass('active');
         this.getData();
+
+        $('body').css({
+            'color': parent_form.font_color || '#333',
+            'background-color': parent_form.primary_color
+        });
+
+        $('.logo').attr('src', window.app.url + '/' + parent_form.logo);
     };
 
     this.render = function render() {
@@ -134,7 +141,8 @@ function WizardManager(parent_form) {
                     var subFcomp = {
                         record_id: $subf.data('record-id'),
                         parent_id: subForm.parent_id,
-                        form_id: subForm.id
+                        form_id: subForm.id,
+                        pre_register: 1
                     };
 
                     // ** get all components of specific subform ** //
@@ -173,11 +181,23 @@ function WizardManager(parent_form) {
     }
 
     function submit() {
+
         if (window.app.saveUrl !== '') {
+            $('[data-action="SUBMIT"]').attr('disabled', true);
             $.post({
                 url: window.app.saveUrl,
                 data: {
                     'request_data': JSON.stringify(window.app.wizz.getData())
+                },
+                success: function success() {
+                    if (window.app.redirectUrl) {
+                        window.location.href = window.app.redirectUrl;
+                    } else {
+                        window.location.href = "";
+                    }
+                },
+                error: function error() {
+                    $('[data-action="SUBMIT"]').attr('disabled', false);
                 }
             });
         }
