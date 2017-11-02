@@ -22,7 +22,10 @@ function WizardManager(parent_form){
             'background-color': parent_form.primary_color
         })
 
+
         $('.logo').attr('src',window.app.url + '/' + parent_form.logo)
+
+        $('#success-message > p').html(window.app.successMessage)
     }
 
     this.render = function render() {
@@ -199,8 +202,8 @@ function WizardManager(parent_form){
     }
 
     function submit(){
-        
-        if(window.app.saveUrl!==''){
+       
+        if(window.app.saveUrl!=='' && confirm("Are you sure you want to submit?")){
             $('[data-action="SUBMIT"]').attr('disabled',true)
             $.post({
                 url:window.app.saveUrl, 
@@ -208,11 +211,20 @@ function WizardManager(parent_form){
                     'request_data':JSON.stringify(window.app.wizz.getData())
                 },
                 success:function () {
-                    if(window.app.redirectUrl){
-                        window.location.href=window.app.redirectUrl;
-                    }else{
-                        window.location.href="";
-                    }
+                   
+                    $( "#success-message" ).dialog({
+                        modal: true,
+                        buttons: {
+                          Ok: function() {
+                            if(window.app.redirectUrl){
+                                window.location.href=window.app.redirectUrl;
+                            }else{
+                                window.location.href="";
+                            }
+                            $( this ).dialog( "close" );
+                          }
+                        }
+                      });
                     
                 },
                 error:function(){

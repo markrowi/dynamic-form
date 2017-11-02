@@ -3,7 +3,7 @@ window.app.saveUrl = '';
 window.app.getUrl = '';
 window.app.url = '';
 window.app.redirectUrl = '';
-
+window.app.successMessage = '';
 $(document).ready(function () {
   
   var form_id = $('[name="form-id"]').val();
@@ -13,6 +13,9 @@ window.app.redirectUrl
 
 //Redirect Url here
   window.app.redirectUrl = "";
+
+
+  window.app.successMessage = "Successfuly submited."
 
   //Save URL here
   // Please see WizardManager.js Line 187 for the submit function. 
