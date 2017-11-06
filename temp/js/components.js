@@ -14,7 +14,7 @@
 
     function LocationComponent(comp) {
         var loc = comp.value ? comp.value.split('||') : ["", ""];
-        return ('\n        <label for="">Province</label>\n        <select\n            ' + (comp['field-required'] ? 'required' : '') + ' \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-province" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder=""\n            data-value="' + loc[0] + '"\n        >\n            <option value="" disabled selected>Select Province</option>\n        </select>').wrapFormGroup() + ('<label for="">City</label>\n        <select \n            ' + (comp['field-required'] ? 'required' : '') + ' \n            disabled \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-city" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder=""\n            data-value="' + loc[1] + '"\n        >\n            <option value="" disabled selected>Select City</option>\n        </select>').wrapFormGroup();
+        return ('\n        <label for="">Province</label>\n        <select\n            ' + (comp['field-required'] ? 'required' : '') + ' \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-province" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder=""\n            data-value="' + loc[0] + '"\n        >\n            <option value="" disabled selected>Select Province</option>\n        </select>').wrapFormGroup() + ('<label for="">City</label> <i class="fa  fa-circle-o-notch fa-spin text-danger city-loader hidden"></i>\n        <select \n            ' + (comp['field-required'] ? 'required' : '') + ' \n            disabled \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-city" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder=""\n            data-value="' + loc[1] + '"\n        >\n            <option value="" disabled selected>Select City</option>\n        </select>').wrapFormGroup();
     }
 
     function DateComponent(comp) {
@@ -28,7 +28,7 @@
     }
 
     function LabelComponent(comp) {
-        return '<h3 style="color:' + comp['label-color'] + '">' + comp['label-title'] + '</h3>';
+        return '<label class="component-label" style="color:' + comp['label-color'] + '">' + comp['label-title'] + '</label>';
     }
 
     function DividerComponent(comp) {

@@ -95,3 +95,23 @@ textarea.parsley-error {
   background-color: #F2DEDE; */
   border-color: #900;
 }
+
+.component-label {
+  font-size: 24px;
+}
+.logo-container  {
+  min-height: 500px;
+}
+.logo{
+  /* display: block;
+  margin: auto;
+  max-width: 100%; */
+
+  display: block;
+  margin: auto;
+  max-width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}

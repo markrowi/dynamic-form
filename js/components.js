@@ -44,7 +44,7 @@
         >
             <option value="" disabled selected>Select Province</option>
         </select>`.wrapFormGroup() + 
-        `<label for="">City</label>
+        `<label for="">City</label> <i class="fa  fa-circle-o-notch fa-spin text-danger city-loader hidden"></i>
         <select 
             ${comp['field-required']?'required':''} 
             disabled 
@@ -91,7 +91,7 @@
     }
     
     function LabelComponent(comp){
-        return `<h3 style="color:${comp['label-color']}">${comp['label-title']}</h3>`
+        return `<label class="component-label" style="color:${comp['label-color']}">${comp['label-title']}</label>`
     }
     
     function DividerComponent(comp){

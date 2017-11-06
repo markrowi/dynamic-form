@@ -15,8 +15,9 @@ function WizardManager(parent_form) {
         this.render();
         this.bind();
         self.app.attr('data-record-id', parent_form.record_id || null);
-        self.$wzrd[self.currentWiz].addClass('active');
-        this.getData();
+        this.mechanic(parent_form.mechanic || "");
+        // self.$wzrd[self.currentWiz].addClass('active')
+        // this.getData();
 
         $('body').css({
             'color': parent_form.font_color || '#333',
@@ -167,6 +168,16 @@ function WizardManager(parent_form) {
         });
 
         return [].concat(parentForm, subforms);
+    };
+
+    this.mechanic = function mechanic(mechanics) {
+        var self = this;
+        var $mechanics = $('<div class="mechanics">\n        <h2 class="text-center">MECHANICS:</h2>\n        <h4 class="text-center">' + mechanics + '</h4>\n        <input type="button" class="btn btn-primary btn-block" value="Pre-register">\n        </div>').on('click', '.btn', function () {
+            self.$wzrd[self.currentWiz].addClass('active');
+            $mechanics.remove();
+        });
+
+        this.app.append($mechanics);
     };
 
     function validate() {

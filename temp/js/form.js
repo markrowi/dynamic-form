@@ -47,13 +47,18 @@ Form.prototype.bindEvent = function bindEvent($frm) {
     $frm.on('change', '.field-location-province', function () {
         var $this = $(this);
         var $city = $this.closest('.component').find('.field-location-city');
+        var $cityLoader = $this.closest('.component').find('.city-loader');
 
         if ($this.val() !== '') {
-            $city.prop('disabled', false);
+            $city.prop('disabled', true);
+            $cityLoader.removeClass('hidden');
+            $city.val('');
             $.get('http://events.enlo.digital/api/cities/' + $this.val(), function (res) {
                 $.each($city, function (index, prv) {
                     populateSelect($(prv), res, 'citiesmunDesc', 'citiesmunDesc', "Select City");
                 });
+                $cityLoader.addClass('hidden');
+                $city.prop('disabled', false);
             });
         } else {
             $city.prop('disabled', true);

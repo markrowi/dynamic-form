@@ -10,7 +10,6 @@ $(document).ready(function () {
 
   var form_id = $('[name="form-id"]').val();
   window.app.url = $('[name="url"]').val();
-  window.app.redirectUrl;
   // Do some code here to fill the get url;
 
   //Redirect Url here

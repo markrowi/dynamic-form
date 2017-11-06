@@ -14,7 +14,7 @@
 
     function LocationComponent(comp) {
         var loc = comp.value ? comp.value.split('||') : ["", ""];
-        return ('\n        <label for="">Province</label>\n        <select\n            ' + (comp['field-required'] ? 'required' : '') + ' \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-province" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder=""\n            data-value="' + loc[0] + '"\n        >\n            <option value="" disabled selected>Select Province</option>\n        </select>').wrapFormGroup() + ('<label for="">City</label>\n        <select \n            ' + (comp['field-required'] ? 'required' : '') + ' \n            disabled \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-city" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder=""\n            data-value="' + loc[1] + '"\n        >\n            <option value="" disabled selected>Select City</option>\n        </select>').wrapFormGroup();
+        return ('\n        <label for="">Province</label>\n        <select\n            ' + (comp['field-required'] ? 'required' : '') + ' \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-province" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder=""\n            data-value="' + loc[0] + '"\n        >\n            <option value="" disabled selected>Select Province</option>\n        </select>').wrapFormGroup() + ('<label for="">City</label> <i class="fa  fa-circle-o-notch fa-spin text-danger city-loader hidden"></i>\n        <select \n            ' + (comp['field-required'] ? 'required' : '') + ' \n            disabled \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-city" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder=""\n            data-value="' + loc[1] + '"\n        >\n            <option value="" disabled selected>Select City</option>\n        </select>').wrapFormGroup();
     }
 
     function DateComponent(comp) {
@@ -28,7 +28,7 @@
     }
 
     function LabelComponent(comp) {
-        return '<h3 style="color:' + comp['label-color'] + '">' + comp['label-title'] + '</h3>';
+        return '<label class="component-label" style="color:' + comp['label-color'] + '">' + comp['label-title'] + '</label>';
     }
 
     function DividerComponent(comp) {
@@ -171,8 +171,9 @@ function WizardManager(parent_form) {
         this.render();
         this.bind();
         self.app.attr('data-record-id', parent_form.record_id || null);
-        self.$wzrd[self.currentWiz].addClass('active');
-        this.getData();
+        this.mechanic(parent_form.mechanic || "");
+        // self.$wzrd[self.currentWiz].addClass('active')
+        // this.getData();
 
         $('body').css({
             'color': parent_form.font_color || '#333',
@@ -325,6 +326,16 @@ function WizardManager(parent_form) {
         return [].concat(parentForm, subforms);
     };
 
+    this.mechanic = function mechanic(mechanics) {
+        var self = this;
+        var $mechanics = $('<div class="mechanics">\n        <h2 class="text-center">MECHANICS:</h2>\n        <h4 class="text-center">' + mechanics + '</h4>\n        <input type="button" class="btn btn-primary btn-block" value="Pre-register">\n        </div>').on('click', '.btn', function () {
+            self.$wzrd[self.currentWiz].addClass('active');
+            $mechanics.remove();
+        });
+
+        this.app.append($mechanics);
+    };
+
     function validate() {
         self.$wzrd[self.currentWiz].find(':input').attr('data-parsley-group', 'block-' + self.currentWiz);
 
@@ -444,13 +455,18 @@ Form.prototype.bindEvent = function bindEvent($frm) {
     $frm.on('change', '.field-location-province', function () {
         var $this = $(this);
         var $city = $this.closest('.component').find('.field-location-city');
+        var $cityLoader = $this.closest('.component').find('.city-loader');
 
         if ($this.val() !== '') {
-            $city.prop('disabled', false);
+            $city.prop('disabled', true);
+            $cityLoader.removeClass('hidden');
+            $city.val('');
             $.get('http://events.enlo.digital/api/cities/' + $this.val(), function (res) {
                 $.each($city, function (index, prv) {
                     populateSelect($(prv), res, 'citiesmunDesc', 'citiesmunDesc', "Select City");
                 });
+                $cityLoader.addClass('hidden');
+                $city.prop('disabled', false);
             });
         } else {
             $city.prop('disabled', true);
