@@ -181,6 +181,8 @@ function WizardManager(parent_form) {
         });
 
         $('.logo').attr('src', window.app.url + '/' + parent_form.logo);
+
+        $('#success-message > p').html(window.app.successMessage);
     };
 
     this.render = function render() {
@@ -350,21 +352,44 @@ function WizardManager(parent_form) {
     function submit() {
 
         if (window.app.saveUrl !== '') {
-            $('[data-action="SUBMIT"]').attr('disabled', true);
-            $.post({
-                url: window.app.saveUrl,
-                data: {
-                    'request_data': JSON.stringify(window.app.wizz.getData())
-                },
-                success: function success() {
-                    if (window.app.redirectUrl) {
-                        window.location.href = window.app.redirectUrl;
-                    } else {
-                        window.location.href = "";
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "Yes": function Yes() {
+                        $('[data-action="SUBMIT"]').attr('disabled', true);
+                        $.post({
+                            url: window.app.saveUrl,
+                            data: {
+                                'request_data': JSON.stringify(window.app.wizz.getData())
+                            },
+                            success: function success() {
+
+                                $("#success-message").dialog({
+                                    modal: true,
+                                    buttons: {
+                                        Ok: function Ok() {
+                                            if (window.app.redirectUrl) {
+                                                window.location.href = window.app.redirectUrl;
+                                            } else {
+                                                window.location.href = "";
+                                            }
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+                            },
+                            error: function error() {
+                                $('[data-action="SUBMIT"]').attr('disabled', false);
+                            }
+                        });
+                        $(this).dialog("close");
+                    },
+                    "No": function No() {
+                        $(this).dialog("close");
                     }
-                },
-                error: function error() {
-                    $('[data-action="SUBMIT"]').attr('disabled', false);
                 }
             });
         }

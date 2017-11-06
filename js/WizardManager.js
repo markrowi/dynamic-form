@@ -23,7 +23,10 @@ function WizardManager(parent_form){
             'background-color': parent_form.primary_color
         })
 
+
         $('.logo').attr('src',window.app.url + '/' + parent_form.logo)
+
+        $('#success-message > p').html(window.app.successMessage)
     }
 
     this.render = function render() {
@@ -212,26 +215,55 @@ function WizardManager(parent_form){
     }
 
     function submit(){
-        
+       
+
+
+
         if(window.app.saveUrl!==''){
-            $('[data-action="SUBMIT"]').attr('disabled',true)
-            $.post({
-                url:window.app.saveUrl, 
-                data: {
-                    'request_data':JSON.stringify(window.app.wizz.getData())
-                },
-                success:function () {
-                    if(window.app.redirectUrl){
-                        window.location.href=window.app.redirectUrl;
-                    }else{
-                        window.location.href="";
-                    }
-                    
-                },
-                error:function(){
-                    $('[data-action="SUBMIT"]').attr('disabled',false)
+            $( "#dialog-confirm" ).dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                  "Yes": function() {
+                    $('[data-action="SUBMIT"]').attr('disabled',true)
+                    $.post({
+                        url:window.app.saveUrl, 
+                        data: {
+                            'request_data':JSON.stringify(window.app.wizz.getData())
+                        },
+                        success:function () {
+                           
+                            $( "#success-message" ).dialog({
+                                modal: true,
+                                buttons: {
+                                  Ok: function() {
+                                    if(window.app.redirectUrl){
+                                        window.location.href=window.app.redirectUrl;
+                                    }else{
+                                        window.location.href="";
+                                    }
+                                    $( this ).dialog( "close" );
+                                  }
+                                }
+                              });
+                            
+                        },
+                        error:function(){
+                            $('[data-action="SUBMIT"]').attr('disabled',false)
+                        }
+                    })
+                    $( this ).dialog( "close" );
+                  },
+                  "No": function() {
+                    $( this ).dialog( "close" );
+                  }
                 }
-            })
+              });
+
+
+            
         
         }
 
