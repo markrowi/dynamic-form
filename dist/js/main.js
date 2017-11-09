@@ -337,7 +337,7 @@ function WizardManager(parent_form) {
         var self = this;
         $.unblockUI();
         $('.wizard').removeClass('active');
-        var $mechanics = $('<div class="success message">\n        <p class="text-center">Registration Successful:</p>\n        <h4 class="text-center">Your registration code:</h4>\n        <h2 class="text-center">' + verification + '</h2>\n        <h4 class="text-center">Thank you for the registration! Please take note of your registration code. This will be your proof on registration and identification for the event.</h4>\n            <input type="button" class="btn btn-primary btn-block btn-lg" value="Start Again">\n        </div>').on('click', '.btn', function () {
+        var $mechanics = $('<div class="success message">\n        <p class="text-center">Registration Successful!</p>\n        <h4 class="text-center">Your registration code:</h4>\n        <h2 class="text-center">' + verification + '</h2>\n        <h4 class="text-center">Thank you for the registration! Please take note of your registration code. This will be your proof of registration and identification for the event.</h4>\n            <input type="button" class="btn btn-primary btn-block btn-lg" value="Start Again">\n        </div>').on('click', '.btn', function () {
             window.location.href = "";
         });
 

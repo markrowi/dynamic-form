@@ -213,10 +213,10 @@ function WizardManager(parent_form){
         $.unblockUI();
         $('.wizard').removeClass('active');
         let $mechanics = $(`<div class="success message">
-        <p class="text-center">Registration Successful:</p>
+        <p class="text-center">Registration Successful!</p>
         <h4 class="text-center">Your registration code:</h4>
         <h2 class="text-center">${verification}</h2>
-        <h4 class="text-center">Thank you for the registration! Please take note of your registration code. This will be your proof on registration and identification for the event.</h4>
+        <h4 class="text-center">Thank you for the registration! Please take note of your registration code. This will be your proof of registration and identification for the event.</h4>
             <input type="button" class="btn btn-primary btn-block btn-lg" value="Start Again">
         </div>`).on('click', '.btn', function(){
             window.location.href="";
