@@ -52,12 +52,16 @@ textarea {
   border-top: 0;
 }
 
+.subform-wrapper > .row{
+  margin-bottom: 10px;
+}
 
 
 
 /* Buton */
 .subform-remove{
   cursor: pointer;
+
 }
 
 .form-btn {
@@ -115,3 +119,25 @@ textarea.parsley-error {
   left: 50%;
   transform: translate(-50%,-50%);
 }
+
+
+.message {
+  margin-top: 20%;
+}
+
+.message h2{
+  margin-top: 0;
+}
+
+.message h4{
+  line-height: 25px;
+
+}
+.message .btn {
+  margin-top: 35px;
+}
+.message p{
+  font-weight: bold;
+  font-size: 20px;
+}
+

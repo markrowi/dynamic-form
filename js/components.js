@@ -1,9 +1,10 @@
 (function(){
     var components = []
     function TextBoxComponent(comp){
+        // <label ${!comp['label-visibible']?"hidden":""} for="">${comp['field-label']}</label>
         comp['value'] = comp['value'] || "";
         return `
-        <label ${comp['field-label']===""?"hidden":""} for="">${comp['field-label']}</label>
+        
         <input 
             type="text" 
             class="form-control" 
@@ -18,14 +19,14 @@
     function EmailComponent(comp){
         comp['value'] = comp['value'] || "";
         return `
-        <label ${comp['field-label']===""?"hidden":""} for="">${comp['field-label']}</label>
+        
         <input 
             type="email"
             class="form-control"  
             data-parsley-errors-messages-disabled
             data-field-type='${comp['field_type']}'  
             ${comp['field-required']?'required':''} 
-            placeholder="mail@example.com"
+            placeholder="${comp['field-placeholder']}"
             value="${comp['value']}"
         />`;
     }
@@ -33,25 +34,25 @@
     function LocationComponent(comp){
         let loc = comp.value?comp.value.split('||') : ["",""];
         return `
-        <label for="">Province</label>
+        
         <select
             ${comp['field-required']?'required':''} 
             data-parsley-errors-messages-disabled
             class="form-control field-location-province" 
             data-field-type='${comp['field_type']}' 
-            placeholder=""
+            placeholder="Province"
             data-value="${loc[0]}"
         >
             <option value="" disabled selected>Select Province</option>
         </select>`.wrapFormGroup() + 
-        `<label for="">City</label> <i class="fa  fa-circle-o-notch fa-spin text-danger city-loader hidden"></i>
+        `<i class="fa  fa-circle-o-notch fa-spin text-danger city-loader hidden"></i>
         <select 
             ${comp['field-required']?'required':''} 
             disabled 
             data-parsley-errors-messages-disabled
             class="form-control field-location-city" 
             data-field-type='${comp['field_type']}' 
-            placeholder=""
+            placeholder="City"
             data-value="${loc[1]}"
         >
             <option value="" disabled selected>Select City</option>
@@ -61,13 +62,14 @@
     function DateComponent(comp){
         comp['value'] = comp['value'] || "";
         return `
-        <label ${comp['field-label']===""?"hidden":""} for="">${comp['field-label']}</label>
+        
         <div class="input-group date">
             <input 
                 type="text" 
                 class="form-control"  
                 data-parsley-errors-messages-disabled
                 value="${comp['value']}"
+                placeholder="${comp['field-placeholder']}"
                 ${comp['field-required']?'required':''} 
             > 
                 <span class="input-group-addon">
@@ -79,14 +81,13 @@
     function TextAreaComponent(comp){
         comp['value'] = comp['value'] || "";
         return `
-        <label ${comp['field-label']===""?"hidden":""}  for="">${comp['field-label']}</label>
+        
         <textarea 
             type="textbox"
             class="form-control" 
             data-parsley-errors-messages-disabled
             ${comp['field-required']?'required':''} 
-            placeholder=""
-            
+            placeholder="${comp['field-placeholder']}"
         >${comp['value']}</textarea>`;
     }
     
@@ -99,12 +100,11 @@
     }
 
     function DropdownComponent(comp){
-        return `<label ${comp['field-label']===""?"hidden":""}  for="">${comp['field-label']}</label>
+        return `<label ${!comp['label-visibible']?"hidden":""}  for="">${comp['field-label']}</label>
                 <select id="" ${comp['field-required']?'required':''} class="form-control" data-parsley-errors-messages-disabled placeholder="">
                 ${comp['field-required']?`<option value="" disabled selected>${comp['field-placeholder']}</option>`:''}
                 ${
                     comp['field-options'].map(function(opt, index){
-                        
                     return  `<option ${comp['value']===opt.value?'selected':''} value="${opt.value}">${opt.label}</option>`;
                     })
                 }
@@ -148,8 +148,8 @@
             }
 
     function SubformComponent(comp){
-        let subforms = []
-        var subformsHtml = ""
+        let subforms = [];
+        var subformsHtml = "";
 
         var frm = new Form(comp.fields, comp['form_id'], this.id);
         window.app = window.app || {};
@@ -160,37 +160,23 @@
         if(comp.value){
             $.each(comp.value, function(ind, vSub){
                 var newSub = {id:vSub.id, 'form_id':comp['form_id'], 'parent_id':self.id, fields:[]};
-                
-
                 $.each(comp.fields, function(index, nsub){
                     newSub.fields.push(_extends({}, nsub, {
                         value: vSub[(nsub['field-name'] + '').toLowerCase()] || ""
                     }));
                 })
-
-                //ES6 Code
-                // {
-                //     ...nsub, 
-                //     value: (vSub[(nsub['field-name'] + '').toLowerCase()] || "") 
-                // }
-
-                
                 subforms.push(newSub);
             })
-            subformsHtml =  subforms.map(function(sform){
-                
+            subformsHtml =  subforms.map(function(sform, frmIndex){
                 let tempFrm = new Form(sform.fields, sform['form_id'], self.id, sform.id); // Insert data id here
                 // console.log('sform', sform)
-                return tempFrm.render(true).wrapSubform();
+                return tempFrm.render(true).wrapSubform(frmIndex!==0);
             }).join('');
         }
-        // console.log('subformsHtml', subformsHtml)
-        // frm = new Form(comp.fields, comp['form_id'], this.id);
-       
         return `<div class="subform" data-type="subform" data-form-id="${comp['form_id']}">
                     <label for="">${comp['field-label']}</label>
                     <div class="container-fluid subform-content">
-                       ${subformsHtml===""?frm.render(true).wrapSubform():subformsHtml}</div>
+                       ${subforms.length===0?frm.render(true).wrapSubform(false):subformsHtml}</div>
                     <div class="form-group"> <span data-form-id=${comp['form_id']} class="form-btn subform-add"><i class="fa fa-plus"></i> Add ${comp['field-label']}</span></div>
                     <div class="clearfix"></div>
                 </div>`;
@@ -255,10 +241,10 @@ String.prototype.wrapComponent = function wrapComponent(field, id="", parent_id=
         </div>`
 }
 
-String.prototype.wrapSubform = function wrapSubform(){
+String.prototype.wrapSubform = function wrapSubform(isRemovable=true){
     return `<div class="subform-wrapper">
     <div class="row pull-right">
-            <span class="form-btn subform-remove"><i class="fa fa-close"></i> Remove</span>
+            ${isRemovable?'<span class="form-btn subform-remove"><i class="fa fa-close"></i> Remove</span>':''}
     </div>
     ${this}
     </div>`

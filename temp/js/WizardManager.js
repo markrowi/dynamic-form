@@ -24,7 +24,9 @@ function WizardManager(parent_form) {
             'background-color': parent_form.primary_color
         });
 
-        $('.logo').attr('src', window.app.url + '/' + parent_form.logo);
+        if (parent_form.poster) {
+            $('.logo').attr('src', window.app.url + '/' + parent_form.poster);
+        }
 
         $('#success-message > p').html(window.app.successMessage);
     };
@@ -91,7 +93,9 @@ function WizardManager(parent_form) {
             var $this = $(this);
             var formId = $this.data('form-id');
             var $subformContent = self.app.find('.subform[data-form-id="' + formId + '"]>.subform-content');
-            $subformContent.append(window.app.subforms[formId].render(true).wrapSubform());
+            var $subform = $(window.app.subforms[formId].render(true).wrapSubform());
+            $subform.find('.input-group.date').datepicker({ format: 'yyyy-mm-dd' });
+            $subformContent.append($subform);
         });
 
         self.app.on('click', '.subform-remove', function () {
@@ -174,9 +178,22 @@ function WizardManager(parent_form) {
 
     this.mechanic = function mechanic(mechanics) {
         var self = this;
-        var $mechanics = $('<div class="mechanics">\n        <h2 class="text-center">MECHANICS:</h2>\n        <h4 class="text-center">' + mechanics + '</h4>\n        <input type="button" class="btn btn-primary btn-block" value="Pre-register">\n        </div>').on('click', '.btn', function () {
+        var $mechanics = $('<div class="mechanics message">\n        <p class="text-center">MECHANICS:</p>\n        <h4 class="text-center">' + mechanics + '</h4>\n        <input type="button" class="btn btn-primary btn-block btn-lg" value="Pre-register">\n        </div>').on('click', '.btn', function () {
             self.$wzrd[self.currentWiz].addClass('active');
             $mechanics.remove();
+        });
+
+        this.app.append($mechanics);
+    };
+
+    this.uiBlock = function (block) {};
+
+    this.success = function success(verification) {
+        var self = this;
+        $.unblockUI();
+        $('.wizard').removeClass('active');
+        var $mechanics = $('<div class="success message">\n        <p class="text-center">Registration Successful:</p>\n        <h4 class="text-center">Your registration code:</h4>\n        <h2 class="text-center">' + verification + '</h2>\n        <h4 class="text-center">Thank you for the registration! Please take note of your registration code. This will be your proof on registration and identification for the event.</h4>\n            <input type="button" class="btn btn-primary btn-block btn-lg" value="Start Again">\n        </div>').on('click', '.btn', function () {
+            window.location.href = "";
         });
 
         this.app.append($mechanics);
@@ -204,26 +221,29 @@ function WizardManager(parent_form) {
                 buttons: {
                     "Yes": function Yes() {
                         $('[data-action="SUBMIT"]').attr('disabled', true);
+                        $.blockUI({ message: "<h1><i class='fa fa-circle-o-notch fa-spin'></i></h1>", css: { backgroundColor: 'transparent', color: '#fff', border: "none" } });
                         $.post({
                             url: window.app.saveUrl,
                             data: {
                                 'request_data': JSON.stringify(window.app.wizz.getData())
                             },
-                            success: function success() {
+                            success: function success(result) {
+                                console.log(result);
 
-                                $("#success-message").dialog({
-                                    modal: true,
-                                    buttons: {
-                                        Ok: function Ok() {
-                                            if (window.app.redirectUrl) {
-                                                window.location.href = window.app.redirectUrl;
-                                            } else {
-                                                window.location.href = "";
-                                            }
-                                            $(this).dialog("close");
-                                        }
-                                    }
-                                });
+                                self.success(result.registration_code);
+                                // $( "#success-message" ).dialog({
+                                //     modal: true,
+                                //     buttons: {
+                                //       Ok: function() {
+                                //         if(window.app.redirectUrl){
+                                //             window.location.href=window.app.redirectUrl;
+                                //         }else{
+                                //             window.location.href="";
+                                //         }
+                                //         $( this ).dialog( "close" );
+                                //       }
+                                //     }
+                                //   });
                             },
                             error: function error() {
                                 $('[data-action="SUBMIT"]').attr('disabled', false);

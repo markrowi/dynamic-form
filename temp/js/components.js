@@ -3,28 +3,29 @@
 (function () {
     var components = [];
     function TextBoxComponent(comp) {
+        // <label ${!comp['label-visibible']?"hidden":""} for="">${comp['field-label']}</label>
         comp['value'] = comp['value'] || "";
-        return '\n        <label ' + (comp['field-label'] === "" ? "hidden" : "") + ' for="">' + comp['field-label'] + '</label>\n        <input \n            type="text" \n            class="form-control" \n            value="' + comp['value'] + '"\n            data-parsley-errors-messages-disabled\n            ' + (comp['numeric-only'] ? 'data-parsley-type="number"' : '') + ' \n            data-field-type=\'' + comp['field_type'] + '\'  ' + (comp['field-required'] ? 'required=""' : '') + ' \n            placeholder="' + comp['field-placeholder'] + '"\n        >';
+        return '\n        \n        <input \n            type="text" \n            class="form-control" \n            value="' + comp['value'] + '"\n            data-parsley-errors-messages-disabled\n            ' + (comp['numeric-only'] ? 'data-parsley-type="number"' : '') + ' \n            data-field-type=\'' + comp['field_type'] + '\'  ' + (comp['field-required'] ? 'required=""' : '') + ' \n            placeholder="' + comp['field-placeholder'] + '"\n        >';
     }
 
     function EmailComponent(comp) {
         comp['value'] = comp['value'] || "";
-        return '\n        <label ' + (comp['field-label'] === "" ? "hidden" : "") + ' for="">' + comp['field-label'] + '</label>\n        <input \n            type="email"\n            class="form-control"  \n            data-parsley-errors-messages-disabled\n            data-field-type=\'' + comp['field_type'] + '\'  \n            ' + (comp['field-required'] ? 'required' : '') + ' \n            placeholder="mail@example.com"\n            value="' + comp['value'] + '"\n        />';
+        return '\n        \n        <input \n            type="email"\n            class="form-control"  \n            data-parsley-errors-messages-disabled\n            data-field-type=\'' + comp['field_type'] + '\'  \n            ' + (comp['field-required'] ? 'required' : '') + ' \n            placeholder="' + comp['field-placeholder'] + '"\n            value="' + comp['value'] + '"\n        />';
     }
 
     function LocationComponent(comp) {
         var loc = comp.value ? comp.value.split('||') : ["", ""];
-        return ('\n        <label for="">Province</label>\n        <select\n            ' + (comp['field-required'] ? 'required' : '') + ' \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-province" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder=""\n            data-value="' + loc[0] + '"\n        >\n            <option value="" disabled selected>Select Province</option>\n        </select>').wrapFormGroup() + ('<label for="">City</label> <i class="fa  fa-circle-o-notch fa-spin text-danger city-loader hidden"></i>\n        <select \n            ' + (comp['field-required'] ? 'required' : '') + ' \n            disabled \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-city" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder=""\n            data-value="' + loc[1] + '"\n        >\n            <option value="" disabled selected>Select City</option>\n        </select>').wrapFormGroup();
+        return ('\n        \n        <select\n            ' + (comp['field-required'] ? 'required' : '') + ' \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-province" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder="Province"\n            data-value="' + loc[0] + '"\n        >\n            <option value="" disabled selected>Select Province</option>\n        </select>').wrapFormGroup() + ('<i class="fa  fa-circle-o-notch fa-spin text-danger city-loader hidden"></i>\n        <select \n            ' + (comp['field-required'] ? 'required' : '') + ' \n            disabled \n            data-parsley-errors-messages-disabled\n            class="form-control field-location-city" \n            data-field-type=\'' + comp['field_type'] + '\' \n            placeholder="City"\n            data-value="' + loc[1] + '"\n        >\n            <option value="" disabled selected>Select City</option>\n        </select>').wrapFormGroup();
     }
 
     function DateComponent(comp) {
         comp['value'] = comp['value'] || "";
-        return '\n        <label ' + (comp['field-label'] === "" ? "hidden" : "") + ' for="">' + comp['field-label'] + '</label>\n        <div class="input-group date">\n            <input \n                type="text" \n                class="form-control"  \n                data-parsley-errors-messages-disabled\n                value="' + comp['value'] + '"\n                ' + (comp['field-required'] ? 'required' : '') + ' \n            > \n                <span class="input-group-addon">\n                    <i class="fa fa-calendar"></i>\n                </span>\n        </div>';
+        return '\n        \n        <div class="input-group date">\n            <input \n                type="text" \n                class="form-control"  \n                data-parsley-errors-messages-disabled\n                value="' + comp['value'] + '"\n                placeholder="' + comp['field-placeholder'] + '"\n                ' + (comp['field-required'] ? 'required' : '') + ' \n            > \n                <span class="input-group-addon">\n                    <i class="fa fa-calendar"></i>\n                </span>\n        </div>';
     }
 
     function TextAreaComponent(comp) {
         comp['value'] = comp['value'] || "";
-        return '\n        <label ' + (comp['field-label'] === "" ? "hidden" : "") + '  for="">' + comp['field-label'] + '</label>\n        <textarea \n            type="textbox"\n            class="form-control" \n            data-parsley-errors-messages-disabled\n            ' + (comp['field-required'] ? 'required' : '') + ' \n            placeholder=""\n            \n        >' + comp['value'] + '</textarea>';
+        return '\n        \n        <textarea \n            type="textbox"\n            class="form-control" \n            data-parsley-errors-messages-disabled\n            ' + (comp['field-required'] ? 'required' : '') + ' \n            placeholder="' + comp['field-placeholder'] + '"\n        >' + comp['value'] + '</textarea>';
     }
 
     function LabelComponent(comp) {
@@ -36,8 +37,7 @@
     }
 
     function DropdownComponent(comp) {
-        return '<label ' + (comp['field-label'] === "" ? "hidden" : "") + '  for="">' + comp['field-label'] + '</label>\n                <select id="" ' + (comp['field-required'] ? 'required' : '') + ' class="form-control" data-parsley-errors-messages-disabled placeholder="">\n                ' + (comp['field-required'] ? '<option value="" disabled selected>' + comp['field-placeholder'] + '</option>' : '') + '\n                ' + comp['field-options'].map(function (opt, index) {
-
+        return '<label ' + (!comp['label-visibible'] ? "hidden" : "") + '  for="">' + comp['field-label'] + '</label>\n                <select id="" ' + (comp['field-required'] ? 'required' : '') + ' class="form-control" data-parsley-errors-messages-disabled placeholder="">\n                ' + (comp['field-required'] ? '<option value="" disabled selected>' + comp['field-placeholder'] + '</option>' : '') + '\n                ' + comp['field-options'].map(function (opt, index) {
             return '<option ' + (comp['value'] === opt.value ? 'selected' : '') + ' value="' + opt.value + '">' + opt.label + '</option>';
         }) + '\n                </select>';
     }
@@ -72,33 +72,20 @@
         if (comp.value) {
             $.each(comp.value, function (ind, vSub) {
                 var newSub = { id: vSub.id, 'form_id': comp['form_id'], 'parent_id': self.id, fields: [] };
-
                 $.each(comp.fields, function (index, nsub) {
                     newSub.fields.push(_extends({}, nsub, {
                         value: vSub[(nsub['field-name'] + '').toLowerCase()] || ""
                     }));
                 });
-
-                //ES6 Code
-                // {
-                //     ...nsub, 
-                //     value: (vSub[(nsub['field-name'] + '').toLowerCase()] || "") 
-                // }
-
-
                 subforms.push(newSub);
             });
-            subformsHtml = subforms.map(function (sform) {
-
+            subformsHtml = subforms.map(function (sform, frmIndex) {
                 var tempFrm = new Form(sform.fields, sform['form_id'], self.id, sform.id); // Insert data id here
                 // console.log('sform', sform)
-                return tempFrm.render(true).wrapSubform();
+                return tempFrm.render(true).wrapSubform(frmIndex !== 0);
             }).join('');
         }
-        // console.log('subformsHtml', subformsHtml)
-        // frm = new Form(comp.fields, comp['form_id'], this.id);
-
-        return '<div class="subform" data-type="subform" data-form-id="' + comp['form_id'] + '">\n                    <label for="">' + comp['field-label'] + '</label>\n                    <div class="container-fluid subform-content">\n                       ' + (subformsHtml === "" ? frm.render(true).wrapSubform() : subformsHtml) + '</div>\n                    <div class="form-group"> <span data-form-id=' + comp['form_id'] + ' class="form-btn subform-add"><i class="fa fa-plus"></i> Add ' + comp['field-label'] + '</span></div>\n                    <div class="clearfix"></div>\n                </div>';
+        return '<div class="subform" data-type="subform" data-form-id="' + comp['form_id'] + '">\n                    <label for="">' + comp['field-label'] + '</label>\n                    <div class="container-fluid subform-content">\n                       ' + (subforms.length === 0 ? frm.render(true).wrapSubform(false) : subformsHtml) + '</div>\n                    <div class="form-group"> <span data-form-id=' + comp['form_id'] + ' class="form-btn subform-add"><i class="fa fa-plus"></i> Add ' + comp['field-label'] + '</span></div>\n                    <div class="clearfix"></div>\n                </div>';
     }
 
     components['label'] = LabelComponent;
@@ -152,5 +139,7 @@ String.prototype.wrapComponent = function wrapComponent(field) {
 };
 
 String.prototype.wrapSubform = function wrapSubform() {
-    return '<div class="subform-wrapper">\n    <div class="row pull-right">\n            <span class="form-btn subform-remove"><i class="fa fa-close"></i> Remove</span>\n    </div>\n    ' + this + '\n    </div>';
+    var isRemovable = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+    return '<div class="subform-wrapper">\n    <div class="row pull-right">\n            ' + (isRemovable ? '<span class="form-btn subform-remove"><i class="fa fa-close"></i> Remove</span>' : '') + '\n    </div>\n    ' + this + '\n    </div>';
 };

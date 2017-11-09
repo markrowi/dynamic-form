@@ -29,7 +29,7 @@ Wizard.prototype.render = function render (btn) {
 
 function actionTemplate(btn, col){
     return `<div class="col-md-${col} col-sm-12">
-            <input type="button" name="" data-action="${btn.action}" class="btn btn-primary btn-block" id="" value="${btn.label}">
+            <input type="button" name="" data-action="${btn.action}" class="btn btn-primary btn-block btn-lg" id="" value="${btn.label}">
         </div>`
 }
 

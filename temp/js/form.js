@@ -26,7 +26,7 @@ function populateSelect($select, list, val, desc) {
 }
 
 Form.prototype.bindEvent = function bindEvent($frm) {
-    $frm.find('.input-group.date').datepicker({});
+    $frm.find('.input-group.date').datepicker({ format: 'yyyy-mm-dd' });
 
     var provinces = window.app.Provinces || [];
 

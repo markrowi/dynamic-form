@@ -19,7 +19,7 @@ function populateSelect($select, list, val, desc, placeholder=""){
 }
 
 Form.prototype.bindEvent = function bindEvent($frm){
-    $frm.find('.input-group.date').datepicker({});
+    $frm.find('.input-group.date').datepicker({ format: 'yyyy-mm-dd'} );
 
     var provinces = window.app.Provinces || [];
     
@@ -97,6 +97,6 @@ String.prototype.wrapFormGroup = function wrapFormGroup(name=""){
 
 
 String.prototype.wrapCol = function wrapCol(num){
-    return `<div class="${num>0?'col-md-6':'col-md-12'}">${this}</div>`
+    return `<div class="${num>0?'col-md-6':'col-md-12'}">${this}</div>`;
 }
 
