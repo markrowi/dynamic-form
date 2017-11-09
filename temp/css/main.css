@@ -100,9 +100,9 @@ textarea.parsley-error {
   border-color: #900;
 }
 
-.component-label {
+/* .component-label {
   font-size: 24px;
-}
+} */
 .logo-container  {
   min-height: 500px;
 }
