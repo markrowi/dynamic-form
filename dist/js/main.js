@@ -37,7 +37,8 @@
     }
 
     function DropdownComponent(comp) {
-        return '<label ' + (!comp['label-visibible'] ? "hidden" : "") + '  for="">' + comp['field-label'] + '</label>\n                <select id="" ' + (comp['field-required'] ? 'required' : '') + ' class="form-control" data-parsley-errors-messages-disabled placeholder="">\n                ' + (comp['field-required'] ? '<option value="" disabled selected>' + comp['field-placeholder'] + '</option>' : '') + '\n                ' + comp['field-options'].map(function (opt, index) {
+        // <label ${!comp['label-visibible']?"hidden":""}  for="">${comp['field-label']}</label>
+        return '\n                <select id="" ' + (comp['field-required'] ? 'required' : '') + ' class="form-control" data-parsley-errors-messages-disabled placeholder="">\n                ' + (comp['field-required'] ? '<option value="" disabled selected>' + comp['field-placeholder'] + '</option>' : '') + '\n                ' + comp['field-options'].map(function (opt, index) {
             return '<option ' + (comp['value'] === opt.value ? 'selected' : '') + ' value="' + opt.value + '">' + opt.label + '</option>';
         }) + '\n                </select>';
     }
@@ -85,7 +86,16 @@
                 return tempFrm.render(true).wrapSubform(frmIndex !== 0);
             }).join('');
         }
-        return '<div class="subform" data-type="subform" data-form-id="' + comp['form_id'] + '">\n                    <label for="">' + comp['field-label'] + '</label>\n                    <div class="container-fluid subform-content">\n                       ' + (subforms.length === 0 ? frm.render(true).wrapSubform(false) : subformsHtml) + '</div>\n                    <div class="form-group"> <span data-form-id=' + comp['form_id'] + ' class="form-btn subform-add"><i class="fa fa-plus"></i> Add ' + comp['field-label'] + '</span></div>\n                    <div class="clearfix"></div>\n                </div>';
+        // return `<div class="subform" data-type="subform" data-form-id="${comp['form_id']}">
+        //             <label for="">${comp['field-label']}</label>
+        //             <div class="container-fluid subform-content">
+        //                ${subforms.length===0?frm.render(true).wrapSubform(false):subformsHtml}</div>
+        //             <div class="form-group"> <span data-form-id=${comp['form_id']} class="form-btn subform-add"><i class="fa fa-plus"></i> Add ${comp['field-label']}</span></div>
+        //             <div class="clearfix"></div>
+        //         </div>`;
+        var visibility = comp['subform-allow-multiple-values'] ? '' : 'hidden';
+
+        return '<div class="subform" data-type="subform" data-form-id="' + comp['form_id'] + '">\n                    <label for="">' + comp['field-label'] + '</label>\n                    <div class="container-fluid subform-content">\n                        ' + (subforms.length === 0 ? frm.render(true).wrapSubform(false) : subformsHtml) + '</div>\n                    <div class="form-group"> <span data-form-id=' + comp['form_id'] + ' class="form-btn subform-add ' + visibility + '"><i class="fa fa-plus"></i> Add ' + comp['field-label'] + '</span></div>\n                    <div class="clearfix"></div>\n                </div>';
     }
 
     components['label'] = LabelComponent;

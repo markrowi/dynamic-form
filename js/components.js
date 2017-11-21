@@ -100,7 +100,8 @@
     }
 
     function DropdownComponent(comp){
-        return `<label ${!comp['label-visibible']?"hidden":""}  for="">${comp['field-label']}</label>
+        // <label ${!comp['label-visibible']?"hidden":""}  for="">${comp['field-label']}</label>
+        return `
                 <select id="" ${comp['field-required']?'required':''} class="form-control" data-parsley-errors-messages-disabled placeholder="">
                 ${comp['field-required']?`<option value="" disabled selected>${comp['field-placeholder']}</option>`:''}
                 ${
@@ -173,11 +174,20 @@
                 return tempFrm.render(true).wrapSubform(frmIndex!==0);
             }).join('');
         }
+        // return `<div class="subform" data-type="subform" data-form-id="${comp['form_id']}">
+        //             <label for="">${comp['field-label']}</label>
+        //             <div class="container-fluid subform-content">
+        //                ${subforms.length===0?frm.render(true).wrapSubform(false):subformsHtml}</div>
+        //             <div class="form-group"> <span data-form-id=${comp['form_id']} class="form-btn subform-add"><i class="fa fa-plus"></i> Add ${comp['field-label']}</span></div>
+        //             <div class="clearfix"></div>
+        //         </div>`;
+        let visibility = (comp['subform-allow-multiple-values']) ? '' : 'hidden';
+        
         return `<div class="subform" data-type="subform" data-form-id="${comp['form_id']}">
                     <label for="">${comp['field-label']}</label>
                     <div class="container-fluid subform-content">
-                       ${subforms.length===0?frm.render(true).wrapSubform(false):subformsHtml}</div>
-                    <div class="form-group"> <span data-form-id=${comp['form_id']} class="form-btn subform-add"><i class="fa fa-plus"></i> Add ${comp['field-label']}</span></div>
+                        ${subforms.length===0?frm.render(true).wrapSubform(false):subformsHtml}</div>
+                    <div class="form-group"> <span data-form-id=${comp['form_id']} class="form-btn subform-add ${visibility}"><i class="fa fa-plus"></i> Add ${comp['field-label']}</span></div>
                     <div class="clearfix"></div>
                 </div>`;
     }
