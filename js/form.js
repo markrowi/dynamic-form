@@ -25,7 +25,7 @@ Form.prototype.bindEvent = function bindEvent($frm){
     
 
     if(provinces.length === 0){
-        $.get('http://events.enlo.digital/api/provinces', function(res){
+        $.get(window.app.provinceUrl, function(res){
             
             window.app.Provinces = res;
             $.each($frm.find('.field-location-province'), function(index, prv){
@@ -49,7 +49,7 @@ Form.prototype.bindEvent = function bindEvent($frm){
             $city.prop('disabled', true);
             $cityLoader.removeClass('hidden');
             $city.val('');
-            $.get('http://events.enlo.digital/api/cities/' + $this.val() , function(res){
+            $.get(window.app.citiesUrl + $this.val() , function(res){
                 $.each($city, function(index, prv){
                     populateSelect($(prv), res, 'citiesmunDesc','citiesmunDesc', "Select City")
                 })

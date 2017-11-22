@@ -6,6 +6,8 @@ window.app.getUrl = '';
 window.app.url = '';
 window.app.redirectUrl = '';
 window.app.successMessage = '';
+window.app.provinceUrl = '';
+window.app.citiesUrl = '';
 $(document).ready(function () {
 
   var form_id = $('[name="form-id"]').val();
@@ -27,5 +29,9 @@ $(document).ready(function () {
   if (form_id || url) {
     window.app.getUrl = window.app.url + '/api/event/' + form_id;
   }
+
+  window.app.provinceUrl = '';
+  window.app.citiesUrl = '';
+
   // window.app.getUrl = 'http://events.enlo.digital/api/event/16/record/10';
 });
