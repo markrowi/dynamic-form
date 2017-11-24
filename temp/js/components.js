@@ -151,5 +151,5 @@ String.prototype.wrapComponent = function wrapComponent(field) {
 String.prototype.wrapSubform = function wrapSubform() {
     var isRemovable = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
-    return '<div class="subform-wrapper">\n    <div class="row pull-right">\n            ' + (isRemovable ? '<span class="form-btn subform-remove"><i class="fa fa-close"></i> Remove</span>' : '') + '\n    </div>\n    ' + this + '\n    </div>';
+    return '<div class="subform-wrapper">\n    <div class="row text-right">\n            ' + (isRemovable ? '<span class="form-btn subform-remove"><i class="fa fa-close"></i> Remove</span>' : '') + '\n    </div>\n    ' + this + '\n    </div>';
 };

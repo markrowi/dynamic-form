@@ -253,7 +253,7 @@ String.prototype.wrapComponent = function wrapComponent(field, id="", parent_id=
 
 String.prototype.wrapSubform = function wrapSubform(isRemovable=true){
     return `<div class="subform-wrapper">
-    <div class="row pull-right">
+    <div class="row text-right">
             ${isRemovable?'<span class="form-btn subform-remove"><i class="fa fa-close"></i> Remove</span>':''}
     </div>
     ${this}
